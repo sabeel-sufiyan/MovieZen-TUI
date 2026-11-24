@@ -66,7 +66,7 @@ for required in "ProviderKind::MovieBox" 'name = "moviezen-tui"' 'name = "moviez
     fi
 done
 
-if ! grep -qF 'pub const OWNER: &str = "sufiyan-sabeel";' src/updater/check.rs; then
+if ! grep -qF 'pub const OWNER: &str = "sabeel-sufiyan";' src/updater/check.rs; then
     fail "the updater must check MovieZen releases, not the upstream repository"
 fi
 

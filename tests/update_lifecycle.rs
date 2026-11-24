@@ -259,12 +259,7 @@ fn test_archive_path_traversal_rejection() {
         enc.finish().unwrap();
     }
 
-    let res = extract_binary(
-        &archive_path,
-        "malicious.tar.gz",
-        "moviezen",
-        &staged_path,
-    );
+    let res = extract_binary(&archive_path, "malicious.tar.gz", "moviezen", &staged_path);
     assert!(res.is_err());
     assert!(res.unwrap_err().contains("traversal"));
 }
@@ -308,13 +303,11 @@ fn test_binary_replacement_and_rollback_on_failure() {
 
 #[test]
 fn test_homebrew_detection_and_safe_refusal() {
-    let homebrew_path =
-        std::path::Path::new("/opt/homebrew/Cellar/moviezen/0.1.12/bin/moviezen");
+    let homebrew_path = std::path::Path::new("/opt/homebrew/Cellar/moviezen/0.1.12/bin/moviezen");
     assert!(is_homebrew_managed(homebrew_path));
 
-    let linuxbrew_path = std::path::Path::new(
-        "/home/linuxbrew/.linuxbrew/Cellar/moviezen/0.1.12/bin/moviezen",
-    );
+    let linuxbrew_path =
+        std::path::Path::new("/home/linuxbrew/.linuxbrew/Cellar/moviezen/0.1.12/bin/moviezen");
     assert!(is_homebrew_managed(linuxbrew_path));
 
     let standard_user_path = std::path::Path::new("/usr/local/bin/moviezen");

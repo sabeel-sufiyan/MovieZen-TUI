@@ -25,7 +25,7 @@ pub const DESCRIPTION: &str =
 pub const CREATOR: &str = "Umaiz Sufiyan";
 
 /// Project home.
-pub const HOMEPAGE: &str = "https://github.com/sufiyan-sabeel/MovieZen-TUI";
+pub const HOMEPAGE: &str = "https://github.com/sabeel-sufiyan/MovieZen-TUI";
 
 /// Display width of [`LOGO_FULL`] in terminal cells.
 pub const LOGO_FULL_WIDTH: u16 = 66;
@@ -133,7 +133,11 @@ mod tests {
     #[test]
     fn installer_wordmark_lines_are_aligned() {
         for line in LOGO_INSTALLER.lines() {
-            assert_eq!(line.width(), LOGO_INSTALLER_WIDTH as usize, "line: {line:?}");
+            assert_eq!(
+                line.width(),
+                LOGO_INSTALLER_WIDTH as usize,
+                "line: {line:?}"
+            );
         }
     }
 

@@ -596,7 +596,7 @@ impl App {
                             );
                         }
                         4 => {
-                            const REPO_URL: &str = "https://github.com/sufiyan-sabeel/MovieZen-TUI";
+                            const REPO_URL: &str = "https://github.com/sabeel-sufiyan/MovieZen-TUI";
                             match crate::net::open_external_url(REPO_URL) {
                                 Ok(()) => {
                                     self.state.notify(

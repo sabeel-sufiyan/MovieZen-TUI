@@ -4,7 +4,7 @@ set -euo pipefail
 APP_NAME="MovieZen-TUI"
 BIN_NAME="moviezen"
 ALIAS_BIN_NAME="moviezen-tui"
-REPO="sufiyan-sabeel/MovieZen-TUI"
+REPO="sabeel-sufiyan/MovieZen-TUI"
 DEFAULT_INSTALL_DIR="$HOME/.local/bin"
 
 VERSION=""
@@ -61,7 +61,7 @@ while [ $# -gt 0 ]; do
 MovieZen-TUI Installer
 
 USAGE:
-    curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash -s -- [OPTIONS]
+    curl -fsSL https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.sh | bash -s -- [OPTIONS]
     ./install.sh [OPTIONS]
 
 OPTIONS:

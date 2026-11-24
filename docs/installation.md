@@ -28,19 +28,19 @@ cache location.
 If you have [Homebrew](https://brew.sh/):
 
 ```bash
-brew tap sufiyan-sabeel/moviezen-tui https://github.com/sufiyan-sabeel/MovieZen-TUI
+brew tap sabeel-sufiyan/moviezen-tui https://github.com/sabeel-sufiyan/MovieZen-TUI
 brew install moviezen-tui
 ```
 
 > [!NOTE]
-> If Homebrew prompts for tap verification on initial install, run `brew trust sufiyan-sabeel/moviezen-tui`.
+> If Homebrew prompts for tap verification on initial install, run `brew trust sabeel-sufiyan/moviezen-tui`.
 
 ### Direct Terminal Script
 
 No package manager required. Open Terminal and run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.sh | bash
 ```
 
 ---
@@ -52,7 +52,7 @@ curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/in
 If you have [Scoop](https://scoop.sh/):
 
 ```powershell
-scoop bucket add moviezen https://github.com/sufiyan-sabeel/MovieZen-TUI
+scoop bucket add moviezen https://github.com/sabeel-sufiyan/MovieZen-TUI
 scoop install moviezen-tui
 ```
 
@@ -61,7 +61,7 @@ scoop install moviezen-tui
 No package manager required. Open **PowerShell** and run:
 
 ```powershell
-irm https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.ps1 | iex
 ```
 
 > **SmartScreen prompt:** If Windows displays *"Windows protected your PC"*, click **More info** → **Run anyway**.
@@ -73,7 +73,7 @@ Open Termux and run:
 
 ```bash
 pkg update && pkg install -y curl tar termux-tools termux-am
-curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.sh | bash
 termux-setup-storage
 ```
 
@@ -96,7 +96,7 @@ cargo install moviezen-tui --locked
 Clone the repository and build the release binary:
 
 ```bash
-git clone https://github.com/sufiyan-sabeel/MovieZen-TUI.git
+git clone https://github.com/sabeel-sufiyan/MovieZen-TUI.git
 cd MovieZen-TUI
 cargo build --release --locked
 ```
@@ -111,7 +111,7 @@ All release assets include cryptographically signed SHA-256 checksums and GitHub
 
 ```bash
 sha256sum -c SHA256SUMS --ignore-missing
-gh attestation verify <archive-file> -R sufiyan-sabeel/MovieZen-TUI
+gh attestation verify <archive-file> -R sabeel-sufiyan/MovieZen-TUI
 ```
 ---
 

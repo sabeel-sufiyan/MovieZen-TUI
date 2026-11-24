@@ -1,6 +1,6 @@
 {
   "name": "moviezen-tui",
-  "version": "0.1.30",
+  "version": "0.1.31",
   "description": "MovieZen-TUI - Your Terminal. Your Cinema. Your Zen. A modern, keyboard-first terminal media interface with cross-platform support.",
   "keywords": [
     "moviezen",
@@ -10,13 +10,13 @@
     "movies",
     "cli"
   ],
-  "homepage": "https://github.com/sufiyan-sabeel/MovieZen-TUI",
+  "homepage": "https://github.com/sabeel-sufiyan/MovieZen-TUI",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sufiyan-sabeel/MovieZen-TUI.git"
+    "url": "git+https://github.com/sabeel-sufiyan/MovieZen-TUI.git"
   },
   "bugs": {
-    "url": "https://github.com/sufiyan-sabeel/MovieZen-TUI/issues"
+    "url": "https://github.com/sabeel-sufiyan/MovieZen-TUI/issues"
   },
   "author": "Umaiz Sufiyan",
   "license": "(MIT OR Apache-2.0)",

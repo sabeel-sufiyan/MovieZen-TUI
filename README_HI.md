@@ -6,7 +6,7 @@
 
 [ English ](README.md) • [ বাংলা ](README_BN.md) • [ हिन्दी ](README_HI.md) • [ Español ](README_ES.md)
 
-[![CI](https://img.shields.io/github/actions/workflow/status/sufiyan-sabeel/MovieZen-TUI/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/sufiyan-sabeel/MovieZen-TUI/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/sabeel-sufiyan/MovieZen-TUI/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/sabeel-sufiyan/MovieZen-TUI/actions/workflows/ci.yml)
 [![crates.io](https://img.shields.io/crates/v/moviezen-tui.svg?logo=rust&style=flat)](https://crates.io/crates/moviezen-tui)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg?style=flat)](#license)
 </div>
@@ -37,28 +37,28 @@
 
 यदि आपके पास macOS पर [Homebrew](https://brew.sh/) है:
 ```bash
-brew tap sufiyan-sabeel/moviezen-tui https://github.com/sufiyan-sabeel/MovieZen-TUI
+brew tap sabeel-sufiyan/moviezen-tui https://github.com/sabeel-sufiyan/MovieZen-TUI
 brew install moviezen-tui
 ```
 
-> **नोट:** पहली बार इंस्टॉल करते समय यदि Homebrew वेरिफिकेशन मांगे, तो `brew trust sufiyan-sabeel/moviezen-tui` चलाएं।
+> **नोट:** पहली बार इंस्टॉल करते समय यदि Homebrew वेरिफिकेशन मांगे, तो `brew trust sabeel-sufiyan/moviezen-tui` चलाएं।
 
 टर्मिनल से सीधे इंस्टॉल (macOS और Linux, किसी पैकेज मैनेजर की आवश्यकता नहीं):
 ```bash
-curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.sh | bash
 ```
 
 ### Windows
 
 यदि आपके पास [Scoop](https://scoop.sh/) है (अनुशंसित):
 ```powershell
-scoop bucket add moviezen https://github.com/sufiyan-sabeel/MovieZen-TUI
+scoop bucket add moviezen https://github.com/sabeel-sufiyan/MovieZen-TUI
 scoop install moviezen-tui
 ```
 
 PowerShell स्क्रिप्ट से सीधे इंस्टॉल (किसी पैकेज मैनेजर की आवश्यकता नहीं):
 ```powershell
-irm https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.ps1 | iex
 ```
 
 > **SmartScreen प्रॉम्ट:** यदि Windows *"Windows protected your PC"* दिखाता है, तो **More info** → **Run anyway** पर क्लिक करें।
@@ -68,7 +68,7 @@ irm https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.p
 Termux खोलें और चलाएं:
 ```bash
 pkg update && pkg install -y curl tar termux-tools termux-am
-curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.sh | bash
 termux-setup-storage
 ```
 > [!IMPORTANT]
@@ -84,7 +84,7 @@ cargo install moviezen-tui --locked
 
 सोर्स कोड से:
 ```bash
-git clone https://github.com/sufiyan-sabeel/MovieZen-TUI.git
+git clone https://github.com/sabeel-sufiyan/MovieZen-TUI.git
 cd MovieZen-TUI
 cargo build --release --locked
 ```
@@ -96,7 +96,7 @@ cargo build --release --locked
 
 ```bash
 sha256sum -c SHA256SUMS --ignore-missing
-gh attestation verify <archive-file> -R sufiyan-sabeel/MovieZen-TUI
+gh attestation verify <archive-file> -R sabeel-sufiyan/MovieZen-TUI
 ```
 
 </details>
@@ -126,7 +126,7 @@ moviezen
 
 ## डॉक्यूमेंटेशन
 
-विस्तृत गाइड और आर्किटेक्चर संदर्भ [**sufiyan-sabeel.github.io/MovieZen-TUI**](https://sufiyan-sabeel.github.io/MovieZen-TUI/) पर या [`docs/`](docs/) डायरेक्टरी में उपलब्ध हैं:
+विस्तृत गाइड और आर्किटेक्चर संदर्भ [**sabeel-sufiyan.github.io/MovieZen-TUI**](https://sabeel-sufiyan.github.io/MovieZen-TUI/) पर या [`docs/`](docs/) डायरेक्टरी में उपलब्ध हैं:
 
 | गाइड | विवरण |
 | :--- | :--- |
@@ -142,7 +142,7 @@ moviezen
 
 प्रोजेक्ट में योगदान का स्वागत है। पुल रिक्वेस्ट सबमिट करने से पहले [CONTRIBUTING.md](CONTRIBUTING.md) की समीक्षा करें।
 
-बग रिपोर्ट करने या नए फीचर का अनुरोध करने के लिए [GitHub Issues](https://github.com/sufiyan-sabeel/MovieZen-TUI/issues) का उपयोग करें।
+बग रिपोर्ट करने या नए फीचर का अनुरोध करने के लिए [GitHub Issues](https://github.com/sabeel-sufiyan/MovieZen-TUI/issues) का उपयोग करें।
 
 ## गोपनीयता (Privacy)
 

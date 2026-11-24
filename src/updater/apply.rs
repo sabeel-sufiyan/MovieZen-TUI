@@ -32,7 +32,7 @@ impl InstallationEnvironment {
                 Some("This installation is managed by Scoop. Run: scoop update moviezen")
             }
             Self::Termux => Some(
-                "Android / Termux update: run 'curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash'",
+                "Android / Termux update: run 'curl -fsSL https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.sh | bash'",
             ),
             Self::Flatpak => Some("Running inside Flatpak. Update via: flatpak update"),
             Self::Snap => Some("Running inside Snap. Update via: sudo snap refresh moviezen"),
@@ -381,8 +381,7 @@ mod tests {
 
     #[test]
     fn detects_scoop_managed_environment() {
-        let win_path =
-            Path::new("C:\\Users\\user\\scoop\\apps\\moviezen\\0.1.23\\moviezen.exe");
+        let win_path = Path::new("C:\\Users\\user\\scoop\\apps\\moviezen\\0.1.23\\moviezen.exe");
         assert!(is_scoop_managed(win_path));
         assert_eq!(detect_environment(win_path), InstallationEnvironment::Scoop);
 

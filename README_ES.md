@@ -6,7 +6,7 @@
 
 [ English ](README.md) • [ বাংলা ](README_BN.md) • [ हिन्दी ](README_HI.md) • [ Español ](README_ES.md)
 
-[![CI](https://img.shields.io/github/actions/workflow/status/sufiyan-sabeel/MovieZen-TUI/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/sufiyan-sabeel/MovieZen-TUI/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/sabeel-sufiyan/MovieZen-TUI/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/sabeel-sufiyan/MovieZen-TUI/actions/workflows/ci.yml)
 [![crates.io](https://img.shields.io/crates/v/moviezen-tui.svg?logo=rust&style=flat)](https://crates.io/crates/moviezen-tui)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg?style=flat)](#licencia)
 </div>
@@ -37,28 +37,28 @@
 
 Si tienes [Homebrew](https://brew.sh/) en macOS:
 ```bash
-brew tap sufiyan-sabeel/moviezen-tui https://github.com/sufiyan-sabeel/MovieZen-TUI
+brew tap sabeel-sufiyan/moviezen-tui https://github.com/sabeel-sufiyan/MovieZen-TUI
 brew install moviezen-tui
 ```
 
-> **Nota:** Si Homebrew solicita verificación de tap en la instalación inicial, ejecuta `brew trust sufiyan-sabeel/moviezen-tui`.
+> **Nota:** Si Homebrew solicita verificación de tap en la instalación inicial, ejecuta `brew trust sabeel-sufiyan/moviezen-tui`.
 
 Instalación directa mediante Terminal (macOS y Linux, sin necesidad de gestor de paquetes):
 ```bash
-curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.sh | bash
 ```
 
 ### Windows
 
 Si tienes [Scoop](https://scoop.sh/) (recomendado):
 ```powershell
-scoop bucket add moviezen https://github.com/sufiyan-sabeel/MovieZen-TUI
+scoop bucket add moviezen https://github.com/sabeel-sufiyan/MovieZen-TUI
 scoop install moviezen-tui
 ```
 
 Instalación directa mediante PowerShell (sin necesidad de gestor de paquetes):
 ```powershell
-irm https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.ps1 | iex
 ```
 
 > **Aviso de SmartScreen:** Si Windows muestra *"Windows protegió su PC"*, haz clic en **Más información** → **Ejecutar de todas formas**.
@@ -68,7 +68,7 @@ irm https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.p
 Abre Termux y ejecuta:
 ```bash
 pkg update && pkg install -y curl tar termux-tools termux-am
-curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.sh | bash
 termux-setup-storage
 ```
 > [!IMPORTANT]
@@ -84,7 +84,7 @@ cargo install moviezen-tui --locked
 
 Compilar desde el código fuente:
 ```bash
-git clone https://github.com/sufiyan-sabeel/MovieZen-TUI.git
+git clone https://github.com/sabeel-sufiyan/MovieZen-TUI.git
 cd MovieZen-TUI
 cargo build --release --locked
 ```
@@ -96,7 +96,7 @@ cargo build --release --locked
 
 ```bash
 sha256sum -c SHA256SUMS --ignore-missing
-gh attestation verify <archive-file> -R sufiyan-sabeel/MovieZen-TUI
+gh attestation verify <archive-file> -R sabeel-sufiyan/MovieZen-TUI
 ```
 
 </details>
@@ -126,7 +126,7 @@ moviezen
 
 ## Documentación
 
-Las guías completas y referencias de arquitectura están disponibles en [**sufiyan-sabeel.github.io/MovieZen-TUI**](https://sufiyan-sabeel.github.io/MovieZen-TUI/) o en el directorio [`docs/`](docs/):
+Las guías completas y referencias de arquitectura están disponibles en [**sabeel-sufiyan.github.io/MovieZen-TUI**](https://sabeel-sufiyan.github.io/MovieZen-TUI/) o en el directorio [`docs/`](docs/):
 
 | Guía | Descripción |
 | :--- | :--- |
@@ -142,7 +142,7 @@ Las guías completas y referencias de arquitectura están disponibles en [**sufi
 
 Cualquier contribución es bienvenida. Revisa [CONTRIBUTING.md](CONTRIBUTING.md) antes de enviar pull requests.
 
-Reporta errores o sugiere nuevas funciones a través de [GitHub Issues](https://github.com/sufiyan-sabeel/MovieZen-TUI/issues).
+Reporta errores o sugiere nuevas funciones a través de [GitHub Issues](https://github.com/sabeel-sufiyan/MovieZen-TUI/issues).
 
 ## Privacidad
 

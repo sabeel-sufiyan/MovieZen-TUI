@@ -20,7 +20,7 @@ Created by **Umaiz Sufiyan**
 
 [ English ](../README.md) • [ বাংলা ](../README_BN.md) • [ हिन्दी ](../README_HI.md) • [ Español ](../README_ES.md)
 
-[![CI](https://img.shields.io/github/actions/workflow/status/sufiyan-sabeel/MovieZen-TUI/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/sufiyan-sabeel/MovieZen-TUI/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/sabeel-sufiyan/MovieZen-TUI/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/sabeel-sufiyan/MovieZen-TUI/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/moviezen-tui.svg?logo=npm&style=flat)](https://www.npmjs.com/package/moviezen-tui)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg?style=flat)](../README.md#license)
 </div>

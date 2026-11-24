@@ -1588,7 +1588,9 @@ mod tests {
         let unix_path =
             PathBuf::from("/home/user/.local/share/moviezen/playback/moviebox_123_1_1.json");
         let opts = format_mpv_script_opts("moviebox", "123", 1, 1, &unix_path);
-        assert!(opts.contains("moviebox-state_file=/home/user/.local/share/moviezen/playback/moviebox_123_1_1.json"));
+        assert!(opts.contains(
+            "moviebox-state_file=/home/user/.local/share/moviezen/playback/moviebox_123_1_1.json"
+        ));
     }
 
     #[test]

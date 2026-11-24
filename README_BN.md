@@ -6,7 +6,7 @@
 
 [ English ](README.md) • [ বাংলা ](README_BN.md) • [ हिन्दी ](README_HI.md) • [ Español ](README_ES.md)
 
-[![CI](https://img.shields.io/github/actions/workflow/status/sufiyan-sabeel/MovieZen-TUI/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/sufiyan-sabeel/MovieZen-TUI/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/sabeel-sufiyan/MovieZen-TUI/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/sabeel-sufiyan/MovieZen-TUI/actions/workflows/ci.yml)
 [![crates.io](https://img.shields.io/crates/v/moviezen-tui.svg?logo=rust&style=flat)](https://crates.io/crates/moviezen-tui)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg?style=flat)](#license)
 </div>
@@ -37,28 +37,28 @@
 
 আপনার সিস্টেমে [Homebrew](https://brew.sh/) থাকলে (macOS):
 ```bash
-brew tap sufiyan-sabeel/moviezen-tui https://github.com/sufiyan-sabeel/MovieZen-TUI
+brew tap sabeel-sufiyan/moviezen-tui https://github.com/sabeel-sufiyan/MovieZen-TUI
 brew install moviezen-tui
 ```
 
-> **নোট:** প্রথমবার ইনস্টলের সময় Homebrew যদি ট্যাপ ভেরিফিকেশন চায়, তবে `brew trust sufiyan-sabeel/moviezen-tui` রান করুন।
+> **নোট:** প্রথমবার ইনস্টলের সময় Homebrew যদি ট্যাপ ভেরিফিকেশন চায়, তবে `brew trust sabeel-sufiyan/moviezen-tui` রান করুন।
 
 সরাসরি টার্মিনাল দিয়ে ইনস্টল (macOS ও Linux, কোনো প্যাকেজ ম্যানেজার লাগবে না):
 ```bash
-curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.sh | bash
 ```
 
 ### Windows
 
 আপনার সিস্টেমে [Scoop](https://scoop.sh/) থাকলে (সুপারিশকৃত):
 ```powershell
-scoop bucket add moviezen https://github.com/sufiyan-sabeel/MovieZen-TUI
+scoop bucket add moviezen https://github.com/sabeel-sufiyan/MovieZen-TUI
 scoop install moviezen-tui
 ```
 
 PowerShell স্ক্রিপ্ট দিয়ে সরাসরি ইনস্টল (কোনো প্যাকেজ ম্যানেজার লাগবে না):
 ```powershell
-irm https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.ps1 | iex
 ```
 
 > **SmartScreen প্রম্পট:** Windows যদি *"Windows protected your PC"* দেখায়, তবে **More info** → **Run anyway** এ ক্লিক করুন।
@@ -68,7 +68,7 @@ irm https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.p
 Termux ওপেন করে রান করুন:
 ```bash
 pkg update && pkg install -y curl tar termux-tools termux-am
-curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.sh | bash
 termux-setup-storage
 ```
 > [!IMPORTANT]
@@ -84,7 +84,7 @@ cargo install moviezen-tui --locked
 
 সোর্স কোড থেকে কম্পাইল:
 ```bash
-git clone https://github.com/sufiyan-sabeel/MovieZen-TUI.git
+git clone https://github.com/sabeel-sufiyan/MovieZen-TUI.git
 cd MovieZen-TUI
 cargo build --release --locked
 ```
@@ -96,7 +96,7 @@ cargo build --release --locked
 
 ```bash
 sha256sum -c SHA256SUMS --ignore-missing
-gh attestation verify <archive-file> -R sufiyan-sabeel/MovieZen-TUI
+gh attestation verify <archive-file> -R sabeel-sufiyan/MovieZen-TUI
 ```
 
 </details>
@@ -126,7 +126,7 @@ moviezen
 
 ## ডকুমেন্টেশন
 
-বিস্তারিত গাইড ও আর্কিটেকচার সম্পর্কে জানতে ভিজিট করুন [**sufiyan-sabeel.github.io/MovieZen-TUI**](https://sufiyan-sabeel.github.io/MovieZen-TUI/) অথবা প্রজেক্টের [`docs/`](docs/) ডিরেক্টরি দেখুন:
+বিস্তারিত গাইড ও আর্কিটেকচার সম্পর্কে জানতে ভিজিট করুন [**sabeel-sufiyan.github.io/MovieZen-TUI**](https://sabeel-sufiyan.github.io/MovieZen-TUI/) অথবা প্রজেক্টের [`docs/`](docs/) ডিরেক্টরি দেখুন:
 
 | গাইড | বিবরণ |
 | :--- | :--- |
@@ -142,7 +142,7 @@ moviezen
 
 প্রজেক্টে যেকোনো ধরনের অবদান সাদরে আমন্ত্রিত। পুল রিকোয়েস্ট পাঠানোর আগে [CONTRIBUTING.md](CONTRIBUTING.md) গাইডলাইনটি দেখে নিন।
 
-কোনো বাগ রিপোর্ট করতে বা নতুন ফিচারের অনুরোধ জানাতে [GitHub Issues](https://github.com/sufiyan-sabeel/MovieZen-TUI/issues) ব্যবহার করুন।
+কোনো বাগ রিপোর্ট করতে বা নতুন ফিচারের অনুরোধ জানাতে [GitHub Issues](https://github.com/sabeel-sufiyan/MovieZen-TUI/issues) ব্যবহার করুন।
 
 ## গোপনীয়তা (Privacy)
 

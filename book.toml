@@ -1,14 +1,14 @@
 [book]
 title = "MovieZen-TUI Documentation"
-authors = ["Samir <sufiyan-sabeel>"]
+authors = ["Samir <sabeel-sufiyan>"]
 language = "en"
 src = "docs"
 
 [output.html]
 default-theme = "navy"
 preferred-dark-theme = "navy"
-git-repository-url = "https://github.com/sufiyan-sabeel/MovieZen-TUI"
-edit-url-template = "https://github.com/sufiyan-sabeel/MovieZen-TUI/edit/main/{path}"
+git-repository-url = "https://github.com/sabeel-sufiyan/MovieZen-TUI"
+edit-url-template = "https://github.com/sabeel-sufiyan/MovieZen-TUI/edit/main/{path}"
 site-url = "/MovieZen-TUI/"
 additional-css = ["docs/custom.css"]
 

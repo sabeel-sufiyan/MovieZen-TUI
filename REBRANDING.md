@@ -9,7 +9,7 @@ and every item that still needs the owner's decision.
 | Item | Value |
 | :--- | :--- |
 | Product name | MovieZen-TUI |
-| Repository | https://github.com/sufiyan-sabeel/MovieZen-TUI |
+| Repository | https://github.com/sabeel-sufiyan/MovieZen-TUI |
 | npm package | `moviezen-tui` |
 | Primary command | `moviezen` |
 | Secondary command | `moviezen-tui` (alias installed by npm, Homebrew, Scoop and both install scripts) |
@@ -56,7 +56,7 @@ which is the intended signal.
 | `--help`, `--version`, `--logo` | `src/main.rs` |
 | Config / data / cache directory names | `src/config.rs` (`APP_NAME = "moviezen"`) |
 | User agent, stream label, log file names | `src/net.rs`, `src/download.rs`, `src/logging.rs` |
-| Update feed | `src/updater/check.rs` (`OWNER = "sufiyan-sabeel"`, `REPOSITORY = "MovieZen-TUI"`) |
+| Update feed | `src/updater/check.rs` (`OWNER = "sabeel-sufiyan"`, `REPOSITORY = "MovieZen-TUI"`) |
 | Installer wordmark and creator credit | `install.sh`, `install.ps1` |
 | Package manifests | `Formula/moviezen-tui.rb`, `bucket/moviezen-tui.json`, `npm/package.json` |
 | Release assets | `MovieZen_<OS>_<arch>.tar.gz` / `.zip` |
@@ -94,7 +94,7 @@ Renaming these would break upstream compatibility, so they are unchanged:
 | Config/data/cache directories renamed to `moviezen` | branding, with an automatic fallback: an existing `moviebox-tui` directory keeps being used until a `moviezen` one exists. |
 | `--logo` flag added | prints the wordmark, tagline and creator; used by the installers and docs. |
 | `MOVIEZEN_ASCII_LOGO=1` | forces the plain-ASCII wordmark on terminals without box-drawing glyphs. |
-| Update check points at `sufiyan-sabeel/MovieZen-TUI` | never install upstream binaries over MovieZen ones. |
+| Update check points at `sabeel-sufiyan/MovieZen-TUI` | never install upstream binaries over MovieZen ones. |
 | Crypto donation block and Telegram badge removed from the README | those accounts belong to the upstream author, not to MovieZen-TUI. |
 
 ## 7. Still needs the owner
@@ -104,7 +104,7 @@ Renaming these would break upstream compatibility, so they are unchanged:
 2. **Push the repository.** Nothing has been pushed: the working tree is delivered
    as a zip with the full upstream history. `main` already points at the rebrand
    commit, and `rebrand/moviezen-identity` keeps it as one reviewable unit.
-3. **Create the GitHub repository** `sufiyan-sabeel/MovieZen-TUI` if it does not
+3. **Create the GitHub repository** `sabeel-sufiyan/MovieZen-TUI` if it does not
    exist, then push both branches:
    `git push -u origin main && git push -u origin rebrand/moviezen-identity`.
 4. **Set secrets** before any release: `NPM_TOKEN` (npm), `CARGO_REGISTRY_TOKEN`

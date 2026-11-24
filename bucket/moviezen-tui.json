@@ -1,18 +1,18 @@
 {
-  "version": "0.1.30",
+  "version": "0.1.31",
   "description": "MovieZen-TUI: a modern, keyboard-first terminal media interface",
-  "homepage": "https://github.com/sufiyan-sabeel/MovieZen-TUI",
+  "homepage": "https://github.com/sabeel-sufiyan/MovieZen-TUI",
   "license": "MIT|Apache-2.0",
   "suggest": {
     "mpv": "extras/mpv"
   },
   "architecture": {
     "64bit": {
-      "url": "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v0.1.30/MovieZen_Windows_x64.zip",
+      "url": "https://github.com/sabeel-sufiyan/MovieZen-TUI/releases/download/v0.1.31/MovieZen_Windows_x64.zip",
       "hash": ""
     },
     "arm64": {
-      "url": "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v0.1.30/MovieZen_Windows_arm64.zip",
+      "url": "https://github.com/sabeel-sufiyan/MovieZen-TUI/releases/download/v0.1.31/MovieZen_Windows_arm64.zip",
       "hash": ""
     }
   },
@@ -30,10 +30,10 @@
   "autoupdate": {
     "architecture": {
       "64bit": {
-        "url": "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v$version/MovieZen_Windows_x64.zip"
+        "url": "https://github.com/sabeel-sufiyan/MovieZen-TUI/releases/download/v$version/MovieZen_Windows_x64.zip"
       },
       "arm64": {
-        "url": "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v$version/MovieZen_Windows_arm64.zip"
+        "url": "https://github.com/sabeel-sufiyan/MovieZen-TUI/releases/download/v$version/MovieZen_Windows_arm64.zip"
       }
     },
     "hash": {

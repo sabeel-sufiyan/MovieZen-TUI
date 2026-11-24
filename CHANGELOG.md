@@ -377,7 +377,7 @@
 
 ### Added
 - **Automated Issue Quality, Version Validation, and Duplicate Management**:
-  - Modernized GitHub issue templates (`.github/ISSUE_TEMPLATE/`) to link directly to official mdBook documentation site guides (`sufiyan-sabeel.github.io/MovieZen-TUI/`).
+  - Modernized GitHub issue templates (`.github/ISSUE_TEMPLATE/`) to link directly to official mdBook documentation site guides (`sabeel-sufiyan.github.io/MovieZen-TUI/`).
   - Added `.github/workflows/incomplete-issue.yml` with semver release validation checking user versions against latest GitHub releases and printing platform upgrade commands.
   - Implemented automated OS labeling (`os: android`, `os: linux`, `os: macos`, `os: windows`), title sanity validation, and Termux player setup guidance.
   - Added automatic removal of `needs-info` and `stale` labels when the issue author provides responses.

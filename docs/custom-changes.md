@@ -17,7 +17,7 @@ logic, so an upstream change to them is expected and safe to re-apply.
 | CLI | `src/main.rs` | `moviezen` naming in `--help`/`--version`, new `--logo` flag, tagline and creator lines |
 | Storage | `src/config.rs` | `APP_NAME = "moviezen"`, legacy `moviebox-tui` directory reuse |
 | User agent / stream label | `src/net.rs`, `src/download.rs` | `MovieZen-TUI` naming |
-| Update feed | `src/updater/check.rs`, `src/updater/*` | checks `sufiyan-sabeel/MovieZen-TUI` releases |
+| Update feed | `src/updater/check.rs`, `src/updater/*` | checks `sabeel-sufiyan/MovieZen-TUI` releases |
 | Repository links | `src/tui/app/system.rs` | project URL |
 | Documentation | `README*.md`, `docs/*.md`, `CONTRIBUTING.md`, `book.toml` | product name, commands, storage paths, new pages |
 | Installers | `install.sh`, `install.ps1` | wordmark, creator credit, `moviezen-tui` alias |

@@ -20,7 +20,7 @@ Created by **Umaiz Sufiyan**
 
 [ English ](README.md) • [ বাংলা ](README_BN.md) • [ हिन्दी ](README_HI.md) • [ Español ](README_ES.md)
 
-[![CI](https://img.shields.io/github/actions/workflow/status/sufiyan-sabeel/MovieZen-TUI/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/sufiyan-sabeel/MovieZen-TUI/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/sabeel-sufiyan/MovieZen-TUI/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/sabeel-sufiyan/MovieZen-TUI/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/moviezen-tui.svg?logo=npm&style=flat)](https://www.npmjs.com/package/moviezen-tui)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg?style=flat)](#license)
 
@@ -65,15 +65,15 @@ The npm package is a thin wrapper: on first run it downloads the official MovieZ
 
 If you have [Homebrew](https://brew.sh/) on macOS:
 ```bash
-brew tap sufiyan-sabeel/moviezen-tui https://github.com/sufiyan-sabeel/MovieZen-TUI
+brew tap sabeel-sufiyan/moviezen-tui https://github.com/sabeel-sufiyan/MovieZen-TUI
 brew install moviezen-tui
 ```
 
-> **Note:** If Homebrew prompts for tap verification on initial install, run `brew trust sufiyan-sabeel/moviezen-tui`.
+> **Note:** If Homebrew prompts for tap verification on initial install, run `brew trust sabeel-sufiyan/moviezen-tui`.
 
 Direct install via Terminal (macOS & Linux, no package manager needed):
 ```bash
-curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.sh | bash
 ```
 
 The installer shows the MovieZen-TUI wordmark, detects your OS and architecture, offers install / update / uninstall / cancel when an existing copy is found, verifies the download checksum, and never escalates permissions unless a system directory actually needs it.
@@ -82,13 +82,13 @@ The installer shows the MovieZen-TUI wordmark, detects your OS and architecture,
 
 If you have [Scoop](https://scoop.sh/) (recommended):
 ```powershell
-scoop bucket add moviezen https://github.com/sufiyan-sabeel/MovieZen-TUI
+scoop bucket add moviezen https://github.com/sabeel-sufiyan/MovieZen-TUI
 scoop install moviezen-tui
 ```
 
 Direct install via PowerShell (no package manager needed):
 ```powershell
-irm https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.ps1 | iex
 ```
 
 > **SmartScreen prompt:** If Windows displays *"Windows protected your PC"*, click **More info** → **Run anyway**.
@@ -96,7 +96,7 @@ irm https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.p
 ### Android (Termux)
 ```bash
 pkg update && pkg install -y curl tar termux-tools termux-am
-curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.sh | bash
 termux-setup-storage
 ```
 
@@ -109,7 +109,7 @@ cargo install moviezen-tui --locked
 
 From source:
 ```bash
-git clone https://github.com/sufiyan-sabeel/MovieZen-TUI.git
+git clone https://github.com/sabeel-sufiyan/MovieZen-TUI.git
 cd MovieZen-TUI
 cargo build --release --locked
 ```
@@ -121,7 +121,7 @@ cargo build --release --locked
 
 ```bash
 sha256sum -c SHA256SUMS --ignore-missing
-gh attestation verify <archive-file> -R sufiyan-sabeel/MovieZen-TUI
+gh attestation verify <archive-file> -R sabeel-sufiyan/MovieZen-TUI
 ```
 
 </details>
@@ -267,7 +267,7 @@ Full documentation lives in [`docs/`](docs/):
 
 ## Contributing
 
-Review [CONTRIBUTING.md](CONTRIBUTING.md) before submitting pull requests. Report bugs via [GitHub Issues](https://github.com/sufiyan-sabeel/MovieZen-TUI/issues).
+Review [CONTRIBUTING.md](CONTRIBUTING.md) before submitting pull requests. Report bugs via [GitHub Issues](https://github.com/sabeel-sufiyan/MovieZen-TUI/issues).
 
 ## Privacy
 

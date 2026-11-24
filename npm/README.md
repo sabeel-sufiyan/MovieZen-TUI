@@ -1,7 +1,7 @@
 # moviezen-tui (npm)
 
 `npm install -g moviezen-tui` — the official npm distribution of
-[MovieZen-TUI](https://github.com/sufiyan-sabeel/MovieZen-TUI).
+[MovieZen-TUI](https://github.com/sabeel-sufiyan/MovieZen-TUI).
 
 **Your Terminal. Your Cinema. Your Zen.**
 

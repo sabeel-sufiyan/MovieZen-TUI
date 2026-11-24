@@ -14,7 +14,7 @@ git clone https://github.com/<your-username>/MovieZen-TUI.git
 cd MovieZen-TUI
 
 # Add the upstream remote to keep in sync
-git remote add upstream https://github.com/sufiyan-sabeel/MovieZen-TUI.git
+git remote add upstream https://github.com/mesamirh/MovieBox-Tui.git
 
 # IMPORTANT: Enable our pre-commit hooks to ensure your code formatting and lints pass
 git config core.hooksPath .githooks

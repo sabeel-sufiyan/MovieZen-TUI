@@ -73,7 +73,7 @@ async function main() {
   } catch (error) {
     process.stderr.write(
       `moviezen-tui: unable to install the native binary: ${error.message}\n` +
-        'Install from source instead: https://github.com/sufiyan-sabeel/MovieZen-TUI#build-from-source\n',
+        'Install from source instead: https://github.com/sabeel-sufiyan/MovieZen-TUI#build-from-source\n',
     );
     return 1;
   }

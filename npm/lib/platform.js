@@ -88,7 +88,7 @@ function resolveTarget(platform = process.platform, arch = process.arch) {
     const error = new Error(
       `MovieZen-TUI has no verified build for ${platform}/${arch}. ` +
         `Supported targets: ${supported}. ` +
-        'Build from source instead: https://github.com/sufiyan-sabeel/MovieZen-TUI#build-from-source',
+        'Build from source instead: https://github.com/sabeel-sufiyan/MovieZen-TUI#build-from-source',
     );
     error.code = 'MOVIEZEN_UNSUPPORTED_PLATFORM';
     throw error;

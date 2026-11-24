@@ -1431,8 +1431,8 @@ dependencies = [
 ]
 
 [[package]]
-name = "moviezen"
-version = "0.1.30"
+name = "moviezen-tui"
+version = "0.1.31"
 dependencies = [
  "base64 0.23.1",
  "crossterm",

@@ -1,6 +1,6 @@
 use super::artifact::{Release, ReleaseAsset};
 
-pub const OWNER: &str = "sufiyan-sabeel";
+pub const OWNER: &str = "sabeel-sufiyan";
 pub const REPOSITORY: &str = "MovieZen-TUI";
 
 pub fn release_tag_url(tag: &str) -> String {

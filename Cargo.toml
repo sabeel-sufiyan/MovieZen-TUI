@@ -17,11 +17,11 @@ exclude = [
     "npm/",
     "REBRANDING.md",
 ]
-version = "0.1.30"
+version = "0.1.31"
 edition = "2024"
 description = "Terminal interface to find, download, and stream movies, TV shows, and live TV using local media players."
-repository = "https://github.com/sufiyan-sabeel/MovieZen-TUI"
-homepage = "https://github.com/sufiyan-sabeel/MovieZen-TUI"
+repository = "https://github.com/sabeel-sufiyan/MovieZen-TUI"
+homepage = "https://github.com/sabeel-sufiyan/MovieZen-TUI"
 license = "MIT OR Apache-2.0"
 keywords = ["tui", "moviezen", "streaming", "movies", "cli"]
 categories = ["command-line-utilities", "multimedia"]

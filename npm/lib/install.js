@@ -9,7 +9,7 @@ const path = require('node:path');
 const zlib = require('node:zlib');
 const { execFileSync } = require('node:child_process');
 
-const REPO = 'sufiyan-sabeel/MovieZen-TUI';
+const REPO = 'sabeel-sufiyan/MovieZen-TUI';
 const pkg = require('../package.json');
 
 /** Root URL that hosts the release assets for this package version. */

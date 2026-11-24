@@ -21,7 +21,7 @@ Set-StrictMode -Version Latest
 $AppName = "MovieZen-TUI"
 $BinName = "moviezen.exe"
 $AliasBinName = "moviezen-tui.exe"
-$Repo = "sufiyan-sabeel/MovieZen-TUI"
+$Repo = "sabeel-sufiyan/MovieZen-TUI"
 $DefaultInstallDir = Join-Path $env:LOCALAPPDATA "Programs\MovieZen-TUI\bin"
 
 if ($Help) {
@@ -29,7 +29,7 @@ if ($Help) {
 MovieZen-TUI Installer (Windows PowerShell)
 
 USAGE:
-    irm https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.ps1 | iex
+    irm https://raw.githubusercontent.com/sabeel-sufiyan/MovieZen-TUI/main/install.ps1 | iex
     .\install.ps1 [OPTIONS]
 
 OPTIONS:
