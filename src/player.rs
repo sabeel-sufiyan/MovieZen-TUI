@@ -3,7 +3,7 @@ pub mod tracker;
 use std::{path::Path, process::Command};
 
 pub const CREATE_NO_WINDOW: u32 = 0x0800_0000;
-pub const ENV_MOVIEBOX_PLAYER: &str = "MOVIEBOX_PLAYER";
+pub const ENV_MOVIEZEN_PLAYER: &str = "MOVIEZEN_PLAYER";
 
 #[cfg(not(target_os = "windows"))]
 pub const STANDARD_UNIX_BIN_DIRS: &[&str] = &[
@@ -202,8 +202,8 @@ fn build_player_process_command(executable: &str) -> Command {
         let mut cmd = Command::new("flatpak");
         cmd.arg("run")
             .arg("--file-forwarding")
-            .arg("--filesystem=xdg-cache/moviebox-tui:ro")
-            .arg("--filesystem=xdg-data/moviebox-tui")
+            .arg("--filesystem=xdg-cache/moviezen:ro")
+            .arg("--filesystem=xdg-data/moviezen")
             .arg("--filesystem=/tmp:ro")
             .args(rest.split_whitespace());
         cmd
@@ -212,8 +212,8 @@ fn build_player_process_command(executable: &str) -> Command {
         let mut cmd = Command::new("flatpak");
         cmd.arg("run")
             .arg("--file-forwarding")
-            .arg("--filesystem=xdg-cache/moviebox-tui:ro")
-            .arg("--filesystem=xdg-data/moviebox-tui")
+            .arg("--filesystem=xdg-cache/moviezen:ro")
+            .arg("--filesystem=xdg-data/moviezen")
             .arg("--filesystem=/tmp:ro")
             .arg(app_id);
         cmd
@@ -221,8 +221,8 @@ fn build_player_process_command(executable: &str) -> Command {
         let mut cmd = Command::new("flatpak");
         cmd.arg("run")
             .arg("--file-forwarding")
-            .arg("--filesystem=xdg-cache/moviebox-tui:ro")
-            .arg("--filesystem=xdg-data/moviebox-tui")
+            .arg("--filesystem=xdg-cache/moviezen:ro")
+            .arg("--filesystem=xdg-data/moviezen")
             .arg("--filesystem=/tmp:ro")
             .arg(executable);
         cmd
@@ -244,7 +244,7 @@ pub enum AndroidOpener {
 pub fn probe_android_openers() -> Vec<AndroidOpener> {
     let mut openers = Vec::new();
 
-    if let Some(custom) = configured_executable("MOVIEBOX_ANDROID_PLAYER_PATH") {
+    if let Some(custom) = configured_executable("MOVIEZEN_ANDROID_PLAYER_PATH") {
         if custom.ends_with("termux-open-url") {
             openers.push(AndroidOpener::TermuxOpenUrl(custom));
         } else if custom.ends_with("termux-am") {
@@ -574,7 +574,7 @@ enum IinaResolution {
 
 #[cfg(target_os = "macos")]
 fn probe_iina_resolution() -> Option<IinaResolution> {
-    if let Some(executable) = configured_executable("MOVIEBOX_IINA_PATH") {
+    if let Some(executable) = configured_executable("MOVIEZEN_IINA_PATH") {
         return Some(IinaResolution::Cli(executable));
     }
 
@@ -1229,7 +1229,7 @@ fn probe_mpv() -> Option<String> {
     };
 
     probe_player_executable(
-        "MOVIEBOX_MPV_PATH",
+        "MOVIEZEN_MPV_PATH",
         &candidates,
         bin_names,
         Some("io.mpv.Mpv"),
@@ -1315,7 +1315,7 @@ fn probe_vlc() -> Option<String> {
     };
 
     probe_player_executable(
-        "MOVIEBOX_VLC_PATH",
+        "MOVIEZEN_VLC_PATH",
         &candidates,
         bin_names,
         Some("org.videolan.VLC"),
@@ -1413,9 +1413,9 @@ fn configured_executable(variable: &str) -> Option<String> {
     let raw = std::env::var(variable).ok().or_else(|| {
         let cfg = crate::config::load();
         match variable {
-            "MOVIEBOX_VLC_PATH" => cfg.vlc_path,
-            "MOVIEBOX_MPV_PATH" => cfg.mpv_path,
-            "MOVIEBOX_IINA_PATH" => cfg.iina_path,
+            "MOVIEZEN_VLC_PATH" => cfg.vlc_path,
+            "MOVIEZEN_MPV_PATH" => cfg.mpv_path,
+            "MOVIEZEN_IINA_PATH" => cfg.iina_path,
             _ => None,
         }
     })?;
@@ -1576,19 +1576,19 @@ mod tests {
     #[test]
     fn test_format_mpv_script_opts_windows_paths() {
         let win_path = PathBuf::from(
-            r"C:\Users\User\AppData\Local\MovieBox-Tui\playback\moviebox_123_1_1.json",
+            r"C:\Users\User\AppData\Local\MovieZen-TUI\playback\moviebox_123_1_1.json",
         );
         let opts = format_mpv_script_opts("moviebox", "123", 1, 1, &win_path);
         assert!(!opts.contains(r"\"));
-        assert!(opts.contains("moviebox-state_file=C:/Users/User/AppData/Local/MovieBox-Tui/playback/moviebox_123_1_1.json"));
+        assert!(opts.contains("moviebox-state_file=C:/Users/User/AppData/Local/MovieZen-TUI/playback/moviebox_123_1_1.json"));
     }
 
     #[test]
     fn test_format_mpv_script_opts_unix_paths() {
         let unix_path =
-            PathBuf::from("/home/user/.local/share/moviebox-tui/playback/moviebox_123_1_1.json");
+            PathBuf::from("/home/user/.local/share/moviezen/playback/moviebox_123_1_1.json");
         let opts = format_mpv_script_opts("moviebox", "123", 1, 1, &unix_path);
-        assert!(opts.contains("moviebox-state_file=/home/user/.local/share/moviebox-tui/playback/moviebox_123_1_1.json"));
+        assert!(opts.contains("moviebox-state_file=/home/user/.local/share/moviezen/playback/moviebox_123_1_1.json"));
     }
 
     #[test]
@@ -1631,8 +1631,8 @@ mod tests {
     #[test]
     fn vlc_command_preserves_windows_native_subtitle_separators() {
         for input in [
-            r"C:\Users\User\AppData\Local\MovieBox-Tui\subs\sub.srt",
-            "C:/Users/User/AppData/Local/MovieBox-Tui/subs/sub.srt",
+            r"C:\Users\User\AppData\Local\MovieZen-TUI\subs\sub.srt",
+            "C:/Users/User/AppData/Local/MovieZen-TUI/subs/sub.srt",
         ] {
             let command = vlc_command(
                 "https://example.test/video.mp4",
@@ -1647,7 +1647,7 @@ mod tests {
                 .map(|arg| arg.to_string_lossy().into_owned())
                 .collect::<Vec<_>>();
             assert!(args.contains(
-                &r"--sub-file=C:\Users\User\AppData\Local\MovieBox-Tui\subs\sub.srt".into()
+                &r"--sub-file=C:\Users\User\AppData\Local\MovieZen-TUI\subs\sub.srt".into()
             ));
         }
     }
@@ -1921,14 +1921,14 @@ mod tests {
             vlc_path: Some("/nonexistent/vlc.exe".to_string()),
             ..Default::default()
         };
-        assert!(configured_executable("MOVIEBOX_VLC_PATH").is_none());
+        assert!(configured_executable("MOVIEZEN_VLC_PATH").is_none());
     }
 
     #[test]
     fn test_mpv_command_headers_and_arguments_assembly() {
         let _lock = ENV_MUTEX.lock().unwrap();
         let headers = vec![
-            ("User-Agent".to_string(), "MovieBox-Tui/0.1.23".to_string()),
+            ("User-Agent".to_string(), "MovieZen-TUI/0.1.23".to_string()),
             ("Referer".to_string(), "https://upstream.cdn/".to_string()),
             ("Origin".to_string(), "https://upstream.cdn".to_string()),
         ];
@@ -2125,8 +2125,8 @@ mod tests {
             vec![
                 "run",
                 "--file-forwarding",
-                "--filesystem=xdg-cache/moviebox-tui:ro",
-                "--filesystem=xdg-data/moviebox-tui",
+                "--filesystem=xdg-cache/moviezen:ro",
+                "--filesystem=xdg-data/moviezen",
                 "--filesystem=/tmp:ro",
                 "--user",
                 "org.videolan.VLC",
@@ -2139,7 +2139,7 @@ mod tests {
             .map(|a| a.to_string_lossy().into_owned())
             .collect();
         assert_eq!(export_args.last().map(String::as_str), Some("io.mpv.Mpv"));
-        assert!(export_args.contains(&"--filesystem=xdg-data/moviebox-tui".to_string()));
+        assert!(export_args.contains(&"--filesystem=xdg-data/moviezen".to_string()));
     }
     #[test]
     fn test_vlc_command_adaptive_maxheight_cap() {

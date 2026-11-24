@@ -63,7 +63,7 @@
 ### Added
 - **In-App Updater Lifecycle**:
   - Tracked target executable path before staging updates and resolved deleted inode suffixes (` (deleted)`) on Linux to restart the new binary automatically after popup self-update.
-  - Scoped Snap package detection to `SNAP_NAME` matching `moviebox-tui` to prevent false positive Snap environment detection when launched inside unrelated host sandboxes.
+  - Scoped Snap package detection to `SNAP_NAME` matching `moviezen` to prevent false positive Snap environment detection when launched inside unrelated host sandboxes.
 
 ### Changed
 - **Dependencies & Build Infrastructure**:
@@ -78,7 +78,7 @@
   - Preserved native Windows `\` path separators for `--sub-file` in VLC (`C:\...`) and passed `--no-one-instance` on Windows and Linux so running VLC windows keep subtitle, header, and resume flags.
   - Stripped query strings and fragments before parsing subtitle extensions (`.srt`, `.vtt`, `.ass`, `.ssa`, `.sub`) so signed CloudFront and OSS URLs keep their true format and DASH MIME type.
   - Pre-downloaded subtitles locally for `mpv` with remote URL fallback, parallelized subtitle downloads with `StreamRelay` sidecar startup, appended an 8-char URL hash to subtitle filenames, and sanitized commas in `--script-opts`.
-  - Mounted `xdg-cache/moviebox-tui:ro`, `xdg-data/moviebox-tui`, and `/tmp:ro` in `flatpak run` while keeping custom user Flatpak flags so sandboxed `mpv` and `VLC` can read subtitles and write watch progress.
+  - Mounted `xdg-cache/moviezen:ro`, `xdg-data/moviezen`, and `/tmp:ro` in `flatpak run` while keeping custom user Flatpak flags so sandboxed `mpv` and `VLC` can read subtitles and write watch progress.
   - Served Termux private-storage subtitles over the local `StreamRelay` `/sub/` loopback endpoint when Android shared storage is unavailable, and restricted startup subtitle cleanup to internal cache and temp folders.
   - Parsed player `stderr` and exit codes to report specific failure reasons (`HTTP 403`, `HTTP 404`, `HTTP 410`, timeout, connection refused), and added deterministic cross-platform contract integration tests (`tests/player_contract.rs`) asserting VLC Win32/UNC paths, IINA CLI option schemas, and header support across OSes.
   - Unified IINA command construction with standard `--mpv-*` argument schemas across platforms, and restricted macOS IINA header disqualification to GUI app fallbacks missing command line tools.
@@ -172,7 +172,7 @@
 
 ### Added
 - **Scoop Package Manager Distribution**:
-  - Added native Scoop manifest in `bucket/moviebox-tui.json` supporting Windows x64 and arm64 architectures with automated hash verification.
+  - Added native Scoop manifest in `bucket/moviezen.json` supporting Windows x64 and arm64 architectures with automated hash verification.
   - Automated Scoop manifest synchronization alongside Homebrew in `.github/workflows/manifests.yml` from release `SHA256SUMS`.
   - Added `InstallationEnvironment::Scoop` detection in `src/updater/apply.rs` with update prompt shortcuts (`[s]`).
 - **Adaptive Stream Resolution Picker**:
@@ -239,7 +239,7 @@
   - Migrated CI test matrix to parallel, process-isolated `cargo-nextest` execution.
 - **Documentation Overhaul**:
   - Streamlined all user and technical guides in `docs/` (`players.md`, `controls.md`, `tv-mode.md`, `config.md`, `addons-mode.md`, `providers.md`, `cross-platform.md`, `cache.md`, `downloads.md`), cutting redundant tables and dense text walls.
-  - Documented environment variables (`MOVIEBOX_LOG`, `MOVIEBOX_IMAGE_PROTOCOL`, `MOVIEBOX_CELL_SIZE`, `NO_COLOR`).
+  - Documented environment variables (`MOVIEZEN_LOG`, `MOVIEZEN_IMAGE_PROTOCOL`, `MOVIEZEN_CELL_SIZE`, `NO_COLOR`).
 ## [0.1.23] - 2026-09-21
 
 ### Fixed
@@ -278,10 +278,10 @@
   - Returned `Ok(vec![])` on empty addon catalogs in `MovieBoxService::fetch_addon_catalog` (`src/service.rs`), preventing empty catalog views from raising false search failure errors.
   - Reset `active_screen` to `Screen::Home` in `reset_mode_state` (`src/tui/app/tv.rs`), preventing orphaned Details screen states when switching between TV and Streaming modes.
 - **Logging Engine, Crash Diagnostics & Backtrace Capture**:
-  - Added stack backtrace capture (`std::backtrace::Backtrace::capture()`) and immediate log buffer flushing (`moviebox_tui::logging::flush()`) to `std::panic::set_hook` in `src/main.rs`, ensuring crash locations and backtraces are committed to disk before terminal restoration and process termination.
-  - Standardized default file log level to `info` across all builds in `src/logging.rs`, ensuring session startup metadata, player lifecycle commands, and exit durations are consistently captured without requiring manual `MOVIEBOX_LOG` configuration.
-  - Retained `LoggerHandle` globally in `src/logging.rs` with graceful fallback to default logging levels if `MOVIEBOX_LOG` contains an invalid level specification.
-  - Re-routed Windows logs directory (`crate::config::logs_dir()`) to Local AppData (`%LOCALAPPDATA%\moviebox-tui\logs`) to align with documentation and avoid roaming enterprise profile sync issues.
+  - Added stack backtrace capture (`std::backtrace::Backtrace::capture()`) and immediate log buffer flushing (`moviezen_tui::logging::flush()`) to `std::panic::set_hook` in `src/main.rs`, ensuring crash locations and backtraces are committed to disk before terminal restoration and process termination.
+  - Standardized default file log level to `info` across all builds in `src/logging.rs`, ensuring session startup metadata, player lifecycle commands, and exit durations are consistently captured without requiring manual `MOVIEZEN_LOG` configuration.
+  - Retained `LoggerHandle` globally in `src/logging.rs` with graceful fallback to default logging levels if `MOVIEZEN_LOG` contains an invalid level specification.
+  - Re-routed Windows logs directory (`crate::config::logs_dir()`) to Local AppData (`%LOCALAPPDATA%\moviezen\logs`) to align with documentation and avoid roaming enterprise profile sync issues.
   - Hardened `sanitize_url` in `src/logging.rs` to redact embedded user/password credentials (`user:pass@host`), preserve original URI schemes, and retain port numbers for localhost and custom IPTV ports.
   - Sanitized and bounded player crash error messages (`clean_player_error`) in `src/tui/app/playback.rs`, preventing unbounded stderr streams and CDN auth tokens from leaking into error logs.
   - Added desktop player launch banners and clean exit logs with duration tracking to `src/tui/app/playback.rs`.
@@ -377,7 +377,7 @@
 
 ### Added
 - **Automated Issue Quality, Version Validation, and Duplicate Management**:
-  - Modernized GitHub issue templates (`.github/ISSUE_TEMPLATE/`) to link directly to official mdBook documentation site guides (`mesamirh.github.io/MovieBox-Tui/`).
+  - Modernized GitHub issue templates (`.github/ISSUE_TEMPLATE/`) to link directly to official mdBook documentation site guides (`sufiyan-sabeel.github.io/MovieZen-TUI/`).
   - Added `.github/workflows/incomplete-issue.yml` with semver release validation checking user versions against latest GitHub releases and printing platform upgrade commands.
   - Implemented automated OS labeling (`os: android`, `os: linux`, `os: macos`, `os: windows`), title sanity validation, and Termux player setup guidance.
   - Added automatic removal of `needs-info` and `stale` labels when the issue author provides responses.
@@ -428,7 +428,7 @@
   - Extracted pure `is_vte_version_truecolor` validator, eliminating non-thread-safe `std::env::set_var` test mutations.
 - **Android Termux Intent Opener Resiliency & Socket Fallback**:
   - Implemented multi-opener resolution in `src/player.rs` returning ordered candidate commands (`termux-am` → `termux-open` → `termux-open-url`).
-  - Added automatic in-flight fallback in `src/tui/app/playback.rs`: if `termux-am` exits with `am.sock` / socket connection failure on Android 12+, MovieBox-TUI automatically retries with `termux-open` without halting playback.
+  - Added automatic in-flight fallback in `src/tui/app/playback.rs`: if `termux-am` exits with `am.sock` / socket connection failure on Android 12+, MovieZen-TUI automatically retries with `termux-open` without halting playback.
   - Replaced long and inaccurate `"Run: pkg install -y termux-am"` notifications with concise mobile-formatted messages under 32 characters (`Termux Setup: Run 'pkg install termux-tools'.`, `No Player: Install a video player.`, `CLI mpv: Switch to Android Player in /settings.`).
 - **tmux Poster Image Passthrough**:
   - Replaced the hard-coded `$TMUX` detection block in `src/tui/terminal.rs` with an outer terminal graphics capability probe (`GHOSTTY_RESOURCES_DIR`, `KITTY_WINDOW_ID`, `WEZTERM_EXECUTABLE`, `ITERM_SESSION_ID`, `ALACRITTY_LOG`, `ALACRITTY_WINDOW_ID`, `foot`).
@@ -463,7 +463,7 @@
   - Extracted `STANDARD_UNIX_BIN_DIRS` in `src/player.rs` consolidating repeated `/opt/homebrew/bin`, `/usr/local/bin`, `/usr/bin`, and nix profiles.
   - Extracted `MAX_PLAYLIST_BYTES` (15 MiB limit) in `src/providers/tv/parser.rs` replacing 4 duplicate inline checks.
   - Added `total_duration()` on `NotificationKind` in `src/models.rs`, eliminating duplicated duration matching in `src/tui/overlay.rs`.
-  - Extracted `ENV_MOVIEBOX_PLAYER`, `STREAM_REFERER`, `SESSION_CACHE_FILE`, `APP_HTTP_USER_AGENT`, `release_tag_url`, and `CIRCLEFTP_BASE_URL` into canonical module constants.
+  - Extracted `ENV_MOVIEZEN_PLAYER`, `STREAM_REFERER`, `SESSION_CACHE_FILE`, `APP_HTTP_USER_AGENT`, `release_tag_url`, and `CIRCLEFTP_BASE_URL` into canonical module constants.
 
 ### Changed
 - **Modal Geometry and Margin Symmetrization**:
@@ -768,7 +768,7 @@
   - Separated dialog sections with subtle horizontal card divider lines (`─`) and dedicated action button pills (`[u] Update Now`, `[o] Open Release Page`, `[Esc] Dismiss`).
 - **Calm, Minimal Self-Updating Progress Dialog**:
   - Redesigned `draw_updating_modal` into a calm, focused card with top and bottom border clearances, eliminating visual crowding against the title and frame.
-  - Streamlined the in-flight display into a unified active status line with spinner (`⠋ Downloading MovieBox-Tui v...` / `⠋ Installing MovieBox-Tui v...`) and a cross-platform safety warning (`⚠ Please wait • do not close terminal` / `[!] Please wait - do not close terminal`).
+  - Streamlined the in-flight display into a unified active status line with spinner (`⠋ Downloading MovieZen-TUI v...` / `⠋ Installing MovieZen-TUI v...`) and a cross-platform safety warning (`⚠ Please wait • do not close terminal` / `[!] Please wait - do not close terminal`).
 ### Fixed
 - **Landing Screen ASCII Banner Bleed-Through**:
 - **Modal Frame Corner Backdrops & Transparent Halos**:
@@ -815,9 +815,9 @@
   - Added count context to pane titles (`Audio (N)`, `Seasons (N)`, `Episodes (N)`), providing immediate visibility into available content quantities.
 - **Native Android ARM64 Release Target & Pipeline**:
   - Added native `aarch64-linux-android` build target to the release workflow (`.github/workflows/release.yml`) using Android NDK r26d and Clang (API 24+).
-  - Configured automated packaging of `MovieBox_Android_arm64.tar.gz` with native Bionic dynamic linking (`libc.so`), valid ELF `PT_PHDR` program header table, and `/system/bin/linker64` dynamic loader.
+  - Configured automated packaging of `MovieZen_Android_arm64.tar.gz` with native Bionic dynamic linking (`libc.so`), valid ELF `PT_PHDR` program header table, and `/system/bin/linker64` dynamic loader.
   - Added Android ELF header validation in CI to verify `PT_PHDR` and `/system/bin/linker64` presence, preventing `Could not find a PHDR: broken executable?` aborts on Android devices.
-  - Updated universal installer script (`install.sh`) to detect Android Termux on 64-bit ARM and automatically fetch `MovieBox_Android_arm64.tar.gz` with verified SHA256 checksums, enabling 1-second native installation without on-device compilation.
+  - Updated universal installer script (`install.sh`) to detect Android Termux on 64-bit ARM and automatically fetch `MovieZen_Android_arm64.tar.gz` with verified SHA256 checksums, enabling 1-second native installation without on-device compilation.
 - **Native mdBook & GitHub Pages Documentation Architecture**:
   - Integrated `mdBook` documentation engine reading directly from canonical `docs/*.md` guides with zero duplicated markdown files and zero third-party web frameworks.
   - Added `docs/SUMMARY.md` defining table-of-contents chapter navigation across all guides, architecture diagrams, and operational workflows.
@@ -923,7 +923,7 @@
 - **In-App Self-Update Engine Hardening**:
   - Added deterministic fallback download URL generation for GitHub release assets and `SHA256SUMS` when unauthenticated API requests encounter HTTP 403 rate limits.
   - Added active in-flight self-update progress modal (`draw_updating_modal`) featuring animated Braille spinners, version upgrade indicators (`v{old} → v{new}`), and real-time status steps.
-  - Added environment-aware update modal actions: displays Homebrew upgrade instructions (`brew upgrade moviebox-tui`) with `[b]` shortcut on Homebrew installations, Termux installer guidance on Android, and package manager notifications on read-only installations.
+  - Added environment-aware update modal actions: displays Homebrew upgrade instructions (`brew upgrade moviezen-tui`) with `[b]` shortcut on Homebrew installations, Termux installer guidance on Android, and package manager notifications on read-only installations.
   - Added 5-iteration retry loop with bounded 1-second backoff in the Windows update helper script (`moviebox_update_helper.bat`) to tolerate transient file locks from antivirus or Windows search indexers during binary replacement.
   - Cached full `Release` metadata in `AppState` and action pipeline, eliminating duplicate network queries between release checking and self-update invocation.
 - **Empirical Performance Standards & Benchmark Testing Guidelines**:
@@ -1071,7 +1071,7 @@
 
 ### Added
 - **MovieBox MPEG-DASH Stream Playback**:
-  - Implemented visitor login authentication with JWT session tracking and atomic disk persistence (`~/.cache/moviebox-tui/moviebox_session.bin`).
+  - Implemented visitor login authentication with JWT session tracking and atomic disk persistence (`~/.cache/moviezen/moviebox_session.bin`).
   - Added CloudFront DASH manifest resolution (`index.mpd`) labeled with `[Multi]` badge in stream listings for multi-resolution playback (`1080p`, `720p`, `480p`).
   - Forwarded authentication headers and mobile `User-Agent` to `mpv`, `IINA`, and `VLC` for authenticated CloudFront DASH demuxing.
 - **Seekable 4KHDHub Stream Resolution**:
@@ -1161,7 +1161,7 @@
   - Implemented modular self-update architecture (`src/updater/` with `check.rs`, `artifact.rs`, `download.rs`, `verify.rs`, `extract.rs`, and `apply.rs`).
   - Added streaming SHA-256 integrity verification validating exact hash matching against release `SHA256SUMS`.
   - Added hardened archive extraction for `.tar.gz` and `.zip` with strict path traversal protection against `..` components and absolute root paths.
-  - Added multi-platform installation strategies: atomic binary replacement with `.old` backup and automatic rollback on Unix/Linux/macOS/Termux, detached helper process on Windows, and Homebrew prefix detection guiding users to `brew upgrade moviebox-tui`.
+  - Added multi-platform installation strategies: atomic binary replacement with `.old` backup and automatic rollback on Unix/Linux/macOS/Termux, detached helper process on Windows, and Homebrew prefix detection guiding users to `brew upgrade moviezen-tui`.
   - Added active work protection deferring self-update when active video playback or background downloads are running.
   - Connected `[u]` shortcut and `[u] Update Now` button in the existing Update Available modal, preserving visual styling, animations, and dismissal model.
   - Added safe terminal state restoration (`disable_raw_mode`, `LeaveAlternateScreen`, `DisableMouseCapture`, `ShowCursor`) before process exec/restart.
@@ -1351,11 +1351,11 @@
   - Replaced redundant dual labels (`Poster unavailable` / `No Art`) and noisy halfblock mosaic fallback with a single clean, centered `No Poster` label across search results, details, and history on non-graphics terminals.
   - Eliminated ANSI block characters, yellow/white selection redraw bars, and unnecessary background image downloads on basic terminals.
   - Preserved full native high-resolution graphical rendering on Sixel, Kitty, and iTerm2 supported terminals.
-  - Added `MOVIEBOX_NO_IMAGE=1` environment override to disable image probing on slow or headless sessions.
+  - Added `MOVIEZEN_NO_IMAGE=1` environment override to disable image probing on slow or headless sessions.
 - **Next-Gen Multi-Tiered Animated Installers (`install.sh` & `install.ps1`)**:
   - Multi-tier progressive rendering with official MovieBox branding and Catppuccin Mocha aesthetic.
   - Live smooth Braille spinners (`⠋ ⠙ ⠹ ...`), SHA256 cryptographic verification against `SHA256SUMS`, and media player ecosystem detection.
-  - 100% sudo-less user-level installation into `~/.local/bin` (or `%LOCALAPPDATA%\Programs\MovieBox-Tui\bin` on Windows) with automatic non-destructive shell PATH integration and zero password prompts.
+  - 100% sudo-less user-level installation into `~/.local/bin` (or `%LOCALAPPDATA%\Programs\MovieZen-TUI\bin` on Windows) with automatic non-destructive shell PATH integration and zero password prompts.
   - Added full CLI flags: `--version <tag>`, `--dir <path>`, `--force`, `--dry-run`, and `--uninstall`.
 - **Explicit Download Directory Autocomplete Hints**:
   - Added `/download-dir <path>` slash command suggestion with clear action descriptions (`Set custom folder (e.g. ~/Movies)` vs. `View current download folder`).
@@ -1363,7 +1363,7 @@
 
 ### Fixed
 - **Custom Download Directory Container Hierarchy**:
-  - Ensured custom download directories always maintain the standardized `MovieBox-TUI` root container (`MovieBox-TUI/Movies/...` and `MovieBox-TUI/Series/...`) without duplicating if already named `MovieBox-TUI`.
+  - Ensured custom download directories always maintain the standardized `MovieZen-TUI` root container (`MovieZen-TUI/Movies/...` and `MovieZen-TUI/Series/...`) without duplicating if already named `MovieZen-TUI`.
 - **Multiline Notification Toast Rendering**:
   - Upgraded notification toast layout to compute dynamic height and wrap multiline messages per line cleanly without horizontal middle-truncation across newlines.
   - Sanitized notification folder paths by substituting home directory with `~`.

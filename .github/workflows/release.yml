@@ -7,6 +7,11 @@ on:
     paths:
       - "Cargo.toml"
   workflow_dispatch:
+    inputs:
+      publish_release:
+        description: "Publish the GitHub release and npm package (requires explicit owner approval)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -110,12 +115,12 @@ jobs:
 
       - name: Smoke-test produced Unix binary
         if: matrix.os != 'windows-latest'
-        run: target/${{ matrix.target }}/release/moviebox-tui --version
+        run: target/${{ matrix.target }}/release/moviezen --version
 
       - name: Validate aarch64 ELF segment page alignment
         if: matrix.target == 'aarch64-unknown-linux-musl'
         run: |
-          BIN="target/${{ matrix.target }}/release/moviebox-tui"
+          BIN="target/${{ matrix.target }}/release/moviezen"
           python3 -c '
           import subprocess, sys
           out = subprocess.check_output(["readelf", "-lW", sys.argv[1]], text=True)
@@ -129,29 +134,29 @@ jobs:
       - name: Smoke-test produced Windows binary
         if: matrix.target == 'x86_64-pc-windows-msvc'
         shell: pwsh
-        run: .\target\${{ matrix.target }}\release\moviebox-tui.exe --version
+        run: .\target\${{ matrix.target }}\release\moviezen.exe --version
 
       - name: Archive Unix
         if: matrix.os != 'windows-latest'
         run: |
           mkdir dist
-          cp target/${{ matrix.target }}/release/moviebox-tui dist/
+          cp target/${{ matrix.target }}/release/moviezen dist/
           cp README.md dist/
           cp LICENSE-* dist/ || true
 
           if [ "${{ matrix.target }}" == "x86_64-unknown-linux-musl" ]; then
-            tar -czvf MovieBox_Linux_x64.tar.gz -C dist .
+            tar -czvf MovieZen_Linux_x64.tar.gz -C dist .
           elif [ "${{ matrix.target }}" == "aarch64-unknown-linux-musl" ]; then
-            tar -czvf MovieBox_Linux_arm64.tar.gz -C dist .
+            tar -czvf MovieZen_Linux_arm64.tar.gz -C dist .
           else
-            tar -czvf moviebox-tui-${{ matrix.target }}.tar.gz -C dist .
+            tar -czvf moviezen-${{ matrix.target }}.tar.gz -C dist .
           fi
 
       - name: Archive Windows
         if: matrix.os == 'windows-latest'
         run: |
           New-Item -ItemType Directory -Force -Path dist | Out-Null
-          Copy-Item "target\${{ matrix.target }}\release\moviebox-tui.exe" "dist\"
+          Copy-Item "target\${{ matrix.target }}\release\moviezen.exe" "dist\"
           Copy-Item "README.md" "dist\"
           $licenses = Get-ChildItem "LICENSE-*" -ErrorAction SilentlyContinue
           if ($licenses) {
@@ -160,9 +165,9 @@ jobs:
             Write-Host "No license files found"
           }
           if ("${{ matrix.target }}" -eq "aarch64-pc-windows-msvc") {
-            Compress-Archive -Path dist\* -DestinationPath MovieBox_Windows_arm64.zip
+            Compress-Archive -Path dist\* -DestinationPath MovieZen_Windows_arm64.zip
           } else {
-            Compress-Archive -Path dist\* -DestinationPath MovieBox_Windows_x64.zip
+            Compress-Archive -Path dist\* -DestinationPath MovieZen_Windows_x64.zip
           }
 
       - name: Upload Artifact
@@ -197,19 +202,19 @@ jobs:
       - name: Create Universal Binary
         run: |
           mkdir -p universal/dist
-          tar -xzf x86_64/moviebox-tui-x86_64-apple-darwin.tar.gz -C x86_64/
-          tar -xzf aarch64/moviebox-tui-aarch64-apple-darwin.tar.gz -C aarch64/
-          lipo -create -output universal/dist/moviebox-tui x86_64/moviebox-tui aarch64/moviebox-tui
+          tar -xzf x86_64/moviezen-x86_64-apple-darwin.tar.gz -C x86_64/
+          tar -xzf aarch64/moviezen-aarch64-apple-darwin.tar.gz -C aarch64/
+          lipo -create -output universal/dist/moviezen x86_64/moviezen aarch64/moviezen
           cp README.md universal/dist/
           cp LICENSE-* universal/dist/ || true
           cd universal/dist
-          tar -czvf ../../MovieBox_macOS_Universal.tar.gz .
+          tar -czvf ../../MovieZen_macOS_Universal.tar.gz .
 
       - name: Upload Universal Artifact
         uses: actions/upload-artifact@v7
         with:
           name: binary-universal-apple-darwin
-          path: MovieBox_macOS_Universal.tar.gz
+          path: MovieZen_macOS_Universal.tar.gz
 
   build-android:
     name: Build Android (aarch64-linux-android)
@@ -250,28 +255,31 @@ jobs:
 
       - name: Validate Android ELF headers
         run: |
-          BIN="target/aarch64-linux-android/release/moviebox-tui"
+          BIN="target/aarch64-linux-android/release/moviezen"
           readelf -lW "$BIN" | grep -F "PHDR" || { echo "::error::Missing PT_PHDR"; exit 1; }
           readelf -lW "$BIN" | grep -F "/system/bin/linker64" || { echo "::error::Missing Android PT_INTERP"; exit 1; }
 
       - name: Archive Android
         run: |
           mkdir dist
-          cp target/aarch64-linux-android/release/moviebox-tui dist/
+          cp target/aarch64-linux-android/release/moviezen dist/
           cp README.md dist/
           cp LICENSE-* dist/ || true
-          tar -czvf MovieBox_Android_arm64.tar.gz -C dist .
+          tar -czvf MovieZen_Android_arm64.tar.gz -C dist .
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v7
         with:
           name: binary-aarch64-linux-android
-          path: MovieBox_Android_arm64.tar.gz
+          path: MovieZen_Android_arm64.tar.gz
 
   release:
     name: Create Release
     needs: [check-version, build, build-macos-universal, build-android]
-    if: needs.check-version.outputs.is_new == 'true'
+    # A version bump on main publishes automatically; a manual run publishes
+    # only when the owner ticks publish_release.
+    if: needs.check-version.outputs.is_new == 'true' && inputs.publish_release
+
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -316,12 +324,12 @@ jobs:
       - name: Validate all expected release artifacts exist
         run: |
           EXPECTED=(
-            "MovieBox_Linux_x64.tar.gz"
-            "MovieBox_Linux_arm64.tar.gz"
-            "MovieBox_Android_arm64.tar.gz"
-            "MovieBox_macOS_Universal.tar.gz"
-            "MovieBox_Windows_x64.zip"
-            "MovieBox_Windows_arm64.zip"
+            "MovieZen_Linux_x64.tar.gz"
+            "MovieZen_Linux_arm64.tar.gz"
+            "MovieZen_Android_arm64.tar.gz"
+            "MovieZen_macOS_Universal.tar.gz"
+            "MovieZen_Windows_x64.zip"
+            "MovieZen_Windows_arm64.zip"
           )
           for asset in "${EXPECTED[@]}"; do
             if ! find artifacts -type f -name "$asset" | grep -q .; then
@@ -333,7 +341,7 @@ jobs:
 
       - name: Generate checksums
         run: |
-          find artifacts -type f \( -name 'MovieBox_*.tar.gz' -o -name 'MovieBox_*.zip' \) -print0 |
+          find artifacts -type f \( -name 'MovieZen_*.tar.gz' -o -name 'MovieZen_*.zip' \) -print0 |
             sort -z |
             while IFS= read -r -d '' file; do
               hash=$(sha256sum "$file" | awk '{print $1}')
@@ -344,8 +352,8 @@ jobs:
         uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
-            artifacts/**/MovieBox_*.tar.gz
-            artifacts/**/MovieBox_*.zip
+            artifacts/**/MovieZen_*.tar.gz
+            artifacts/**/MovieZen_*.zip
             SHA256SUMS
 
       - name: Publish Release
@@ -356,6 +364,63 @@ jobs:
           body: ${{ steps.changelog.outputs.notes }}
           generate_release_notes: ${{ steps.changelog.outputs.has_notes != 'true' }}
           files: |
-            artifacts/**/MovieBox_*.tar.gz
-            artifacts/**/MovieBox_*.zip
+            artifacts/**/MovieZen_*.tar.gz
+            artifacts/**/MovieZen_*.zip
             SHA256SUMS
+
+  npm:
+    name: Publish npm package
+    needs: [check-version, release]
+    if: needs.check-version.outputs.is_new == 'true' && inputs.publish_release
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Sync package version and licenses into the npm wrapper
+        run: |
+          VERSION="${{ needs.check-version.outputs.version }}"
+          node -e "
+            const fs = require('fs');
+            const p = 'npm/package.json';
+            const pkg = JSON.parse(fs.readFileSync(p, 'utf8'));
+            pkg.version = process.env.VERSION;
+            fs.writeFileSync(p, JSON.stringify(pkg, null, 2) + '\n');
+          "
+          cp LICENSE-MIT LICENSE-APACHE npm/
+        env:
+          VERSION: ${{ needs.check-version.outputs.version }}
+
+      - name: Test the npm wrapper
+        run: node npm/test/smoke.js
+
+      - name: Check whether the version is already on npm
+        id: npm_check
+        run: |
+          VERSION="${{ needs.check-version.outputs.version }}"
+          if npm view "moviezen-tui@$VERSION" version >/dev/null 2>&1; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "moviezen-tui@$VERSION is already published. Nothing to do."
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish to npm
+        if: steps.npm_check.outputs.publish == 'true'
+        working-directory: npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public --provenance
+
+      - name: Verify the published package
+        run: |
+          VERSION="${{ needs.check-version.outputs.version }}"
+          npm view "moviezen-tui@$VERSION" version dist.tarball
+          npm view moviezen-tui bin

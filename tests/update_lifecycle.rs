@@ -1,14 +1,14 @@
-use moviebox_tui::models::NotificationKind;
-use moviebox_tui::tui::action::Action;
-use moviebox_tui::tui::app::App;
-use moviebox_tui::tui::overlay::update_modal_layout;
-use moviebox_tui::updater::apply::{
+use moviezen_tui::models::NotificationKind;
+use moviezen_tui::tui::action::Action;
+use moviezen_tui::tui::app::App;
+use moviezen_tui::tui::overlay::update_modal_layout;
+use moviezen_tui::updater::apply::{
     InstallationEnvironment, SelfUpdateOutcome, apply_staged_binary, detect_environment,
     is_homebrew_managed, is_writable,
 };
-use moviebox_tui::updater::extract::extract_binary;
-use moviebox_tui::updater::verify::{compute_sha256, parse_sha256sums, verify_checksum};
-use moviebox_tui::updater::{Release, ReleaseAsset, TargetPlatform};
+use moviezen_tui::updater::extract::extract_binary;
+use moviezen_tui::updater::verify::{compute_sha256, parse_sha256sums, verify_checksum};
+use moviezen_tui::updater::{Release, ReleaseAsset, TargetPlatform};
 use ratatui::layout::Rect;
 use std::io::Write;
 
@@ -180,7 +180,7 @@ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  two_spaces.tar
 fn test_tar_gz_extraction_and_permissions() {
     let temp = tempfile::tempdir().unwrap();
     let archive_path = temp.path().join("test.tar.gz");
-    let staged_path = temp.path().join("moviebox-tui");
+    let staged_path = temp.path().join("moviezen");
 
     {
         let file = std::fs::File::create(&archive_path).unwrap();
@@ -189,7 +189,7 @@ fn test_tar_gz_extraction_and_permissions() {
 
         let data = b"#!/bin/sh\necho updated\n";
         let mut header = tar::Header::new_gnu();
-        header.set_path("moviebox-tui").unwrap();
+        header.set_path("moviezen").unwrap();
         header.set_size(data.len() as u64);
         header.set_mode(0o755);
         header.set_cksum();
@@ -197,7 +197,7 @@ fn test_tar_gz_extraction_and_permissions() {
         tar.finish().unwrap();
     }
 
-    extract_binary(&archive_path, "test.tar.gz", "moviebox-tui", &staged_path).unwrap();
+    extract_binary(&archive_path, "test.tar.gz", "moviezen", &staged_path).unwrap();
     assert!(staged_path.exists());
     assert_eq!(
         std::fs::read(&staged_path).unwrap(),
@@ -209,18 +209,18 @@ fn test_tar_gz_extraction_and_permissions() {
 fn test_zip_extraction_and_permissions() {
     let temp = tempfile::tempdir().unwrap();
     let archive_path = temp.path().join("test.zip");
-    let staged_path = temp.path().join("moviebox-tui.exe");
+    let staged_path = temp.path().join("moviezen.exe");
 
     {
         let file = std::fs::File::create(&archive_path).unwrap();
         let mut zip = zip::ZipWriter::new(file);
         let options = zip::write::SimpleFileOptions::default();
-        zip.start_file("dist/moviebox-tui.exe", options).unwrap();
+        zip.start_file("dist/moviezen.exe", options).unwrap();
         zip.write_all(b"windows binary payload").unwrap();
         zip.finish().unwrap();
     }
 
-    extract_binary(&archive_path, "test.zip", "moviebox-tui.exe", &staged_path).unwrap();
+    extract_binary(&archive_path, "test.zip", "moviezen.exe", &staged_path).unwrap();
     assert!(staged_path.exists());
     assert_eq!(
         std::fs::read(&staged_path).unwrap(),
@@ -232,7 +232,7 @@ fn test_zip_extraction_and_permissions() {
 fn test_archive_path_traversal_rejection() {
     let temp = tempfile::tempdir().unwrap();
     let archive_path = temp.path().join("malicious.tar.gz");
-    let staged_path = temp.path().join("moviebox-tui");
+    let staged_path = temp.path().join("moviezen");
 
     {
         let file = std::fs::File::create(&archive_path).unwrap();
@@ -262,7 +262,7 @@ fn test_archive_path_traversal_rejection() {
     let res = extract_binary(
         &archive_path,
         "malicious.tar.gz",
-        "moviebox-tui",
+        "moviezen",
         &staged_path,
     );
     assert!(res.is_err());
@@ -309,15 +309,15 @@ fn test_binary_replacement_and_rollback_on_failure() {
 #[test]
 fn test_homebrew_detection_and_safe_refusal() {
     let homebrew_path =
-        std::path::Path::new("/opt/homebrew/Cellar/moviebox-tui/0.1.12/bin/moviebox-tui");
+        std::path::Path::new("/opt/homebrew/Cellar/moviezen/0.1.12/bin/moviezen");
     assert!(is_homebrew_managed(homebrew_path));
 
     let linuxbrew_path = std::path::Path::new(
-        "/home/linuxbrew/.linuxbrew/Cellar/moviebox-tui/0.1.12/bin/moviebox-tui",
+        "/home/linuxbrew/.linuxbrew/Cellar/moviezen/0.1.12/bin/moviezen",
     );
     assert!(is_homebrew_managed(linuxbrew_path));
 
-    let standard_user_path = std::path::Path::new("/usr/local/bin/moviebox-tui");
+    let standard_user_path = std::path::Path::new("/usr/local/bin/moviezen");
     assert!(!is_homebrew_managed(standard_user_path));
 }
 
@@ -328,7 +328,7 @@ fn test_update_asset_missing_for_current_platform() {
         tag_name: "v0.1.13".to_string(),
         notes: "Notes".to_string(),
         assets: vec![ReleaseAsset {
-            name: "MovieBox_Linux_x64.tar.gz".to_string(),
+            name: "MovieZen_Linux_x64.tar.gz".to_string(),
             download_url: "https://...".to_string(),
             size: Some(1000),
         }],
@@ -355,7 +355,7 @@ async fn test_update_editing_mode_input_isolation() {
     let mut app = App::new();
     app.state_mut().update_available =
         Some(("0.1.16".to_string(), "New release notes".to_string()));
-    app.state_mut().input_mode = moviebox_tui::tui::state::InputMode::Editing;
+    app.state_mut().input_mode = moviezen_tui::tui::state::InputMode::Editing;
 
     let u_key = crossterm::event::KeyEvent::new(
         crossterm::event::KeyCode::Char('u'),
@@ -485,10 +485,10 @@ async fn test_update_target_exe_tracking_on_start() {
 #[test]
 fn test_restart_resolution_recovers_unlinked_path() {
     let temp = tempfile::tempdir().unwrap();
-    let current_bin = temp.path().join("moviebox-tui");
+    let current_bin = temp.path().join("moviezen");
     std::fs::write(&current_bin, b"new binary").unwrap();
 
-    let deleted_link = temp.path().join("moviebox-tui.old (deleted)");
-    let resolved = moviebox_tui::updater::resolve_executable_path(&deleted_link);
+    let deleted_link = temp.path().join("moviezen.old (deleted)");
+    let resolved = moviezen_tui::updater::resolve_executable_path(&deleted_link);
     assert_eq!(resolved, current_bin);
 }

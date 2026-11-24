@@ -1,0 +1,49 @@
+{
+  "name": "moviezen-tui",
+  "version": "0.1.30",
+  "description": "MovieZen-TUI - Your Terminal. Your Cinema. Your Zen. A modern, keyboard-first terminal media interface with cross-platform support.",
+  "keywords": [
+    "moviezen",
+    "tui",
+    "terminal",
+    "streaming",
+    "movies",
+    "cli"
+  ],
+  "homepage": "https://github.com/sufiyan-sabeel/MovieZen-TUI",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sufiyan-sabeel/MovieZen-TUI.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sufiyan-sabeel/MovieZen-TUI/issues"
+  },
+  "author": "Umaiz Sufiyan",
+  "license": "(MIT OR Apache-2.0)",
+  "bin": {
+    "moviezen": "bin/cli.js",
+    "moviezen-tui": "bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "README.md",
+    "LICENSE-MIT",
+    "LICENSE-APACHE"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32",
+    "android"
+  ],
+  "scripts": {
+    "test": "node test/smoke.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

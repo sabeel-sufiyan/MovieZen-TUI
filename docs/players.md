@@ -1,6 +1,6 @@
 # Players
 
-MovieBox-TUI delegates playback to external media players (`mpv`, `IINA`, `VLC`, or Android intent players).
+MovieZen-TUI delegates playback to external media players (`mpv`, `IINA`, `VLC`, or Android intent players).
 
 ## Detection Order
 
@@ -14,9 +14,9 @@ Players are detected in priority order and cached across runs:
   - Searches `%LOCALAPPDATA%`, `Program Files`, WinGet packages, Scoop shims, Chocolatey, and Windows Registry `App Paths`.
 - **Android / Termux**: `Android Intent` (headless CLI) or `MPV` → `VLC` → `Android Intent` (graphical X11/Wayland desktop)
   - In headless terminal environments without an active display server, dispatches directly to external Android media apps via `termux-open` or `am start`.
-  - In graphical environments with an active display server (`$DISPLAY` or `$WAYLAND_DISPLAY`, such as Xfce in udroid/PRoot or Termux:X11), native desktop players (`MPV`/`VLC`) take priority over Android intents. Unconfigured sessions resolve players dynamically, and desktop displays bypass legacy saved Android defaults unless overridden by `MOVIEBOX_PLAYER`.
+  - In graphical environments with an active display server (`$DISPLAY` or `$WAYLAND_DISPLAY`, such as Xfce in udroid/PRoot or Termux:X11), native desktop players (`MPV`/`VLC`) take priority over Android intents. Unconfigured sessions resolve players dynamically, and desktop displays bypass legacy saved Android defaults unless overridden by `MOVIEZEN_PLAYER`.
 
-You can set a default player via `/settings` (Media Player), or override it with the `MOVIEBOX_PLAYER` environment variable.
+You can set a default player via `/settings` (Media Player), or override it with the `MOVIEZEN_PLAYER` environment variable.
 
 ## Player Invocations
 
@@ -60,6 +60,6 @@ termux-open --chooser --content-type video/* <url>
 
 ## Spawning & Process Safety
 
-- Players and the `StreamRelay` sidecar launch in detached OS sessions (`libc::setsid()` with `SIGHUP` ignored on Unix/macOS/Linux/Android, and `DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP` on Windows) so closing the terminal or quitting `moviebox-tui` does not stop active video playback.
-- Player `stderr` writes to a temporary log file so `moviebox-tui` can exit without triggering `SIGPIPE` crashes while still capturing crash diagnostics when the TUI stays open.
+- Players and the `StreamRelay` sidecar launch in detached OS sessions (`libc::setsid()` with `SIGHUP` ignored on Unix/macOS/Linux/Android, and `DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP` on Windows) so closing the terminal or quitting `moviezen` does not stop active video playback.
+- Player `stderr` writes to a temporary log file so `moviezen` can exit without triggering `SIGPIPE` crashes while still capturing crash diagnostics when the TUI stays open.
 - Clean exits (VLC exit code `1` with empty stderr, or Unix `SIGTERM`) count as normal exits and update watch history without false crash popups.

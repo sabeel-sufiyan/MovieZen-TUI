@@ -1,6 +1,6 @@
 # Modules
 
-The crate (`moviebox_tui`) is split into top-level modules and, inside `tui`, an `app`
+The crate (`moviezen_tui`) is split into top-level modules and, inside `tui`, an `app`
 directory that holds the application object. Below is the full tree with each module's
 responsibility.
 
@@ -29,7 +29,7 @@ src/
                      provider/subject/episode entries, cap 100.
 
   logging.rs         File logging: flexi_logger, rotation (5MB, keep 3),
-                     MOVIEBOX_LOG level, URL/path sanitization for sharing.
+                     MOVIEZEN_LOG level, URL/path sanitization for sharing.
 
   models.rs          Pure domain data models: SearchResult, BrowseMetric,
                      BrowsePreset, BrowseMetrics, SubjectStreamPool, Notification,

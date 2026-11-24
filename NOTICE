@@ -1,0 +1,38 @@
+MovieZen-TUI
+============
+
+MovieZen-TUI is a rebranded fork of MovieBox-Tui.
+
+Upstream project
+----------------
+MovieBox-Tui
+https://github.com/mesamirh/MovieBox-Tui
+Created by Samir (mesamirh)
+Licensed under MIT OR Apache-2.0
+
+MovieZen-TUI
+------------
+https://github.com/sufiyan-sabeel/MovieZen-TUI
+Fork maintained by Umaiz Sufiyan
+Licensed under MIT OR Apache-2.0
+
+What was changed
+----------------
+Rebranding only: product name, binary and package names, wordmark and
+installer artwork, documentation, distribution channels (npm, Homebrew, Scoop,
+install scripts) and the automated upstream synchronization workflow. The
+application source is derived from the upstream project, and the upstream
+copyright notices in LICENSE-MIT and LICENSE-APACHE apply unchanged to the
+derived portions.
+
+Preserved from upstream
+-----------------------
+The "moviebox" content provider module (src/providers/moviebox/), its wire
+protocol, provider identity and configuration key (moviebox_enabled) are
+upstream compatibility interfaces and are deliberately not renamed. Third-party
+dependencies keep their own licences.
+
+Trademarks
+----------
+MovieZen-TUI is not affiliated with, endorsed by, or sponsored by the upstream
+project or its author. Names of third-party services belong to their owners.

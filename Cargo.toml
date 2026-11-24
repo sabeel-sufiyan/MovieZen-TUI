@@ -1,5 +1,6 @@
 [package]
-name = "moviebox-tui"
+name = "moviezen-tui"
+autobins = false
 exclude = [
     "docs/",
     "Formula/",
@@ -13,14 +14,16 @@ exclude = [
     ".gitignore",
     "book.toml",
     "book/",
+    "npm/",
+    "REBRANDING.md",
 ]
 version = "0.1.30"
 edition = "2024"
 description = "Terminal interface to find, download, and stream movies, TV shows, and live TV using local media players."
-repository = "https://github.com/mesamirh/MovieBox-Tui"
-homepage = "https://github.com/mesamirh/MovieBox-Tui"
+repository = "https://github.com/sufiyan-sabeel/MovieZen-TUI"
+homepage = "https://github.com/sufiyan-sabeel/MovieZen-TUI"
 license = "MIT OR Apache-2.0"
-keywords = ["tui", "moviebox", "streaming", "movies", "cli"]
+keywords = ["tui", "moviezen", "streaming", "movies", "cli"]
 categories = ["command-line-utilities", "multimedia"]
 readme = "README.md"
 rust-version = "1.90.0"
@@ -61,8 +64,12 @@ tar = "0.4.44"
 zip = { version = "9.0.5", default-features = false, features = ["deflate"] }
 tempfile = "3.17.1"
 
+[[bin]]
+name = "moviezen"
+path = "src/main.rs"
+
 [lib]
-name = "moviebox_tui"
+name = "moviezen_tui"
 path = "src/lib.rs"
 
 [lints.clippy]

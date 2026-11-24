@@ -1,0 +1,280 @@
+name: Upstream Sync
+
+# Keeps MovieZen-TUI in feature parity with the upstream project without ever
+# overwriting MovieZen branding. Runs daily and on demand; every result arrives
+# as a pull request (or an issue when a human has to resolve a conflict), never
+# as a direct push to main and never as a release.
+
+on:
+  schedule:
+    # Daily at 03:17 UTC, off the hour to avoid the GitHub Actions peak.
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+    inputs:
+      upstream_ref:
+        description: "Upstream branch or tag to synchronize (blank = upstream default branch)"
+        required: false
+      dry_run:
+        description: "Only report what would change; do not push a branch or open a PR"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+
+env:
+  UPSTREAM_URL: https://github.com/mesamirh/MovieBox-Tui.git
+  SYNC_STATE_FILE: .github/upstream-sync.json
+  BRANDING_GUARD: .github/scripts/verify-branding.sh
+
+jobs:
+  sync:
+    name: Synchronize upstream
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git identity
+        run: |
+          git config user.name "moviezen-upstream-sync[bot]"
+          git config user.email "moviezen-upstream-sync@users.noreply.github.com"
+
+      - name: Add upstream remote and resolve its default branch
+        id: upstream
+        run: |
+          git remote add upstream "$UPSTREAM_URL"
+          git fetch --tags --prune upstream
+          BRANCH="${{ inputs.upstream_ref }}"
+          if [ -z "$BRANCH" ]; then
+            BRANCH=$(git ls-remote --symref upstream HEAD | awk '/^ref:/ {sub("refs/heads/", "", $2); print $2; exit}')
+          fi
+          if [ -z "$BRANCH" ]; then
+            echo "::error::Unable to resolve the upstream default branch."
+            exit 1
+          fi
+          git fetch upstream "$BRANCH"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "head=$(git rev-parse "upstream/$BRANCH")" >> "$GITHUB_OUTPUT"
+          echo "Upstream branch: $BRANCH"
+
+      - name: Read last synchronized upstream commit
+        id: state
+        run: |
+          LAST=""
+          if [ -f "$SYNC_STATE_FILE" ]; then
+            LAST=$(node -e "const s=require('./$SYNC_STATE_FILE'); process.stdout.write(s.upstream_commit || '')" 2>/dev/null || true)
+          fi
+          if [ -z "$LAST" ] || ! git cat-file -e "$LAST^{commit}" 2>/dev/null; then
+            LAST=$(git merge-base HEAD "upstream/${{ steps.upstream.outputs.branch }}" || true)
+          fi
+          echo "last=$LAST" >> "$GITHUB_OUTPUT"
+          echo "Last synchronized upstream commit: ${LAST:-none}"
+
+      - name: Collect new upstream commits
+        id: delta
+        run: |
+          LAST="${{ steps.state.outputs.last }}"
+          HEAD_SHA="${{ steps.upstream.outputs.head }}"
+          if [ -n "$LAST" ] && git merge-base --is-ancestor "$HEAD_SHA" HEAD; then
+            echo "count=0" >> "$GITHUB_OUTPUT"
+            echo "Upstream is already fully merged."
+            exit 0
+          fi
+          if [ -n "$LAST" ]; then
+            RANGE="$LAST..$HEAD_SHA"
+          else
+            RANGE="$HEAD_SHA"
+          fi
+          git log --no-merges --pretty=format:'- %h %s (%an)' "$RANGE" > /tmp/upstream-commits.md || true
+          COUNT=$(git rev-list --count "$RANGE" || echo 0)
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "range=$RANGE" >> "$GITHUB_OUTPUT"
+          echo "$COUNT new upstream commit(s)."
+
+      - name: Create synchronization branch
+        if: steps.delta.outputs.count != '0'
+        run: |
+          BRANCH="sync/upstream-$(date -u +%Y-%m-%d)"
+          git checkout -B "$BRANCH"
+          echo "SYNC_BRANCH=$BRANCH" >> "$GITHUB_ENV"
+          echo "Created $BRANCH"
+
+      - name: Merge upstream
+        id: merge
+        if: steps.delta.outputs.count != '0'
+        run: |
+          set +e
+          git merge --no-ff --no-edit "upstream/${{ steps.upstream.outputs.branch }}"
+          STATUS=$?
+          set -e
+          if [ "$STATUS" -eq 0 ]; then
+            echo "conflicts=false" >> "$GITHUB_OUTPUT"
+            echo "SYNC_CONFLICTS=false" >> "$GITHUB_ENV"
+            echo "Upstream merged cleanly."
+            exit 0
+          fi
+          echo "conflicts=true" >> "$GITHUB_OUTPUT"
+          echo "SYNC_CONFLICTS=true" >> "$GITHUB_ENV"
+          git diff --name-only --diff-filter=U > /tmp/conflicts.txt || true
+          echo "Conflicting files:"
+          cat /tmp/conflicts.txt
+
+      - name: Resolve mechanical conflicts only
+        if: steps.merge.outputs.conflicts == 'true'
+        run: |
+          # Only files whose upstream version is always correct for us are
+          # resolved automatically. Anything else goes to a human.
+          MECHANICAL="CHANGELOG.md Cargo.lock"
+          UNRESOLVED=""
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            case " $MECHANICAL " in
+              *" $file "*)
+                git checkout --theirs -- "$file"
+                git add -- "$file"
+                echo "auto-resolved (took upstream): $file"
+                ;;
+              *)
+                UNRESOLVED="$UNRESOLVED $file"
+                ;;
+            esac
+          done < /tmp/conflicts.txt
+          if [ -n "$UNRESOLVED" ]; then
+            printf '%s\n' "$UNRESOLVED" | tr ' ' '\n' | sed '/^$/d' > /tmp/unresolved.txt
+            echo "::warning::Human review required for:$UNRESOLVED"
+            exit 0
+          fi
+          git commit --no-edit
+          echo "SYNC_CONFLICTS=false" >> "$GITHUB_ENV"
+          echo "All conflicts were mechanical; merge committed."
+
+      - name: Report conflicts that need a human
+        if: steps.merge.outputs.conflicts == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -s /tmp/unresolved.txt ]; then
+            TITLE="Upstream sync needs manual conflict resolution"
+            BODY=$(printf 'The daily upstream sync could not merge `upstream/%s` automatically.\n\nFiles that need a human decision:\n\n```\n%s\n```\n\nResolve locally:\n\n```bash\ngit remote add upstream %s\ngit fetch upstream\ngit checkout -b sync/manual-$(date -u +%%Y-%%m-%%d)\ngit merge upstream/%s\n```\n\nDo not force a merge that drops MovieZen branding; keep provider modules untouched.\n' "${{ steps.upstream.outputs.branch }}" "$(cat /tmp/unresolved.txt)" "$UPSTREAM_URL" "${{ steps.upstream.outputs.branch }}")
+            EXISTING=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number' || true)
+            if [ -n "$EXISTING" ]; then
+              gh issue comment "$EXISTING" --body "$BODY"
+            else
+              gh issue create --title "$TITLE" --body "$BODY" --label "upstream-sync" || gh issue create --title "$TITLE" --body "$BODY"
+            fi
+            git merge --abort || true
+          fi
+
+      - name: Record synchronization state
+        if: steps.delta.outputs.count != '0' && env.SYNC_CONFLICTS != 'true'
+        run: |
+          cat > "$SYNC_STATE_FILE" <<EOF
+          {
+            "upstream_repository": "mesamirh/MovieBox-Tui",
+            "upstream_branch": "${{ steps.upstream.outputs.branch }}",
+            "upstream_commit": "${{ steps.upstream.outputs.head }}",
+            "synchronized_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          EOF
+          git add "$SYNC_STATE_FILE"
+          git commit -m "chore(sync): record upstream ${{ steps.upstream.outputs.head }}" || true
+
+      - name: Verify branding survived the merge
+        if: steps.delta.outputs.count != '0' && env.SYNC_CONFLICTS != 'true'
+        run: bash "$BRANDING_GUARD"
+
+      - name: Install Rust toolchain
+        if: steps.delta.outputs.count != '0' && env.SYNC_CONFLICTS != 'true'
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.90.0
+          components: rustfmt, clippy
+
+      - name: Run the test suite
+        id: tests
+        if: steps.delta.outputs.count != '0' && env.SYNC_CONFLICTS != 'true'
+        continue-on-error: true
+        env:
+          MOVIEZEN_CONFIG_DIR: ${{ runner.temp }}/sync_config
+          MOVIEZEN_DATA_DIR: ${{ runner.temp }}/sync_data
+        run: |
+          set -o pipefail
+          cargo fmt --all -- --check 2>&1 | tee /tmp/fmt.log
+          cargo check --locked 2>&1 | tee /tmp/check.log
+          cargo test --locked 2>&1 | tee /tmp/test.log
+
+      - name: Test the npm wrapper
+        if: steps.delta.outputs.count != '0' && env.SYNC_CONFLICTS != 'true'
+        continue-on-error: true
+        run: node npm/test/smoke.js
+
+      - name: Push the synchronization branch
+        if: steps.delta.outputs.count != '0' && env.SYNC_CONFLICTS != 'true' && inputs.dry_run != true
+        run: git push --force-with-lease origin "$SYNC_BRANCH"
+
+      - name: Open or update the synchronization pull request
+        if: steps.delta.outputs.count != '0' && env.SYNC_CONFLICTS != 'true' && inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          {
+            printf 'Automated upstream synchronization.\n\n'
+            printf 'Upstream: `%s` (`%s`)\n\n' "$UPSTREAM_URL" "${{ steps.upstream.outputs.branch }}"
+            printf 'Last synchronized commit: `%s`\n\n' "${{ steps.state.outputs.last }}"
+            printf '### Upstream commits in this synchronization\n\n'
+            cat /tmp/upstream-commits.md
+            printf '\n### Checks\n\n'
+            if [ "${{ steps.tests.outcome }}" = "success" ]; then
+              printf -- '- cargo fmt / check / test: passed\n'
+            else
+              printf -- '- cargo fmt / check / test: FAILED, see the workflow logs before merging\n'
+            fi
+            printf -- '- branding guard: passed\n'
+            printf -- '- npm wrapper smoke test: see job log\n\n'
+            printf 'This pull request is an integration candidate. It never publishes a release and never pushes to `main`.\n'
+          } > /tmp/pr-body.md
+
+          DRAFT=""
+          if [ "${{ steps.tests.outcome }}" != "success" ]; then
+            DRAFT="--draft"
+          fi
+
+          EXISTING=$(gh pr list --head "$SYNC_BRANCH" --json number --jq '.[0].number' || true)
+          if [ -n "$EXISTING" ]; then
+            gh pr edit "$EXISTING" --body-file /tmp/pr-body.md
+            gh pr comment "$EXISTING" --body "Re-ran the sync: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          else
+            gh pr create \
+              --base main \
+              --head "$SYNC_BRANCH" \
+              --title "chore(sync): merge upstream ${{ steps.upstream.outputs.branch }} ($(date -u +%Y-%m-%d))" \
+              --body-file /tmp/pr-body.md \
+              --label "upstream-sync" $DRAFT || \
+            gh pr create \
+              --base main \
+              --head "$SYNC_BRANCH" \
+              --title "chore(sync): merge upstream ${{ steps.upstream.outputs.branch }} ($(date -u +%Y-%m-%d))" \
+              --body-file /tmp/pr-body.md $DRAFT
+          fi
+
+      - name: Summarize
+        run: |
+          {
+            echo "### Upstream sync"
+            echo ""
+            echo "- Upstream branch: \`${{ steps.upstream.outputs.branch }}\`"
+            echo "- New upstream commits: ${{ steps.delta.outputs.count }}"
+            echo "- Conflicts: ${{ steps.merge.outputs.conflicts }}"
+            echo "- Tests: ${{ steps.tests.outcome }}"
+          } >> "$GITHUB_STEP_SUMMARY"

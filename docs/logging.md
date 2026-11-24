@@ -5,16 +5,16 @@ statuses, content-types) are recorded and can be shared.
 
 ## Location
 
-- macOS: `~/Library/Application Support/moviebox-tui/logs/`
-- Windows: `%LOCALAPPDATA%\moviebox-tui\logs\`
-- Linux: `$XDG_DATA_HOME/moviebox-tui/logs/` (else `~/.local/share/moviebox-tui/logs/`)
+- macOS: `~/Library/Application Support/moviezen/logs/`
+- Windows: `%LOCALAPPDATA%\moviezen\logs\`
+- Linux: `$XDG_DATA_HOME/moviezen/logs/` (else `~/.local/share/moviezen/logs/`)
 
-The active file is `moviebox-tui_rCURRENT.log`; rotated files are
-`moviebox-tui_r00000.log`, `…`.
+The active file is `moviezen_rCURRENT.log`; rotated files are
+`moviezen_r00000.log`, `…`.
 
 ## Behavior
 
-- **Level** is controlled by `MOVIEBOX_LOG` (`off|error|warn|info|debug|trace`). Default is
+- **Level** is controlled by `MOVIEZEN_LOG` (`off|error|warn|info|debug|trace`). Default is
   `info` across all builds (`warn` and `error` lines are always included).
 - **Rotation**: rotates at 5MB and keeps 3 files.
 - **Terminal output**: normal log lines write only to the log file and never touch stdout or stderr, which keeps the screen clean before entering alternate screen mode. Setup errors (if any) are reported on `stderr`.
@@ -29,7 +29,7 @@ The active file is `moviebox-tui_rCURRENT.log`; rotated files are
 - `warn`: recoverable issues (mirror rejected, subtitle unavailable, cache write
   failed, GitHub rate limit).
 - `info`: session start, playable mirror found, playback launch.
-- `debug`: full request context (enable with `MOVIEBOX_LOG=debug`).
+- `debug`: full request context (enable with `MOVIEZEN_LOG=debug`).
 
 ## Privacy / sharing
 

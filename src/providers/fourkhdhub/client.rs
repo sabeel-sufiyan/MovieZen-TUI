@@ -65,7 +65,7 @@ pub struct FourKHdHubClient {
 
 impl FourKHdHubClient {
     pub fn new() -> Result<Self, FourKHdHubError> {
-        let base = std::env::var("MOVIEBOX_FOURKHDHUB_URL")
+        let base = std::env::var("MOVIEZEN_FOURKHDHUB_URL")
             .unwrap_or_else(|_| DEFAULT_BASE_URL.to_string());
         Self::with_base_url(&base)
     }

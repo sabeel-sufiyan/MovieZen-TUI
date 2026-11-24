@@ -1,3 +1,4 @@
+pub mod branding;
 pub mod cache;
 pub mod config;
 pub mod download;

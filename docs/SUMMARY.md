@@ -24,6 +24,12 @@
 - [Logging System](logging.md)
 - [Cross-Platform Operations](cross-platform.md)
 
+# Distribution & Maintenance
+
+- [npm Package](npm.md)
+- [Upstream Synchronization](upstream-sync.md)
+- [Custom Files & Modifications](custom-changes.md)
+
 # Reference & Maintenance
 
 - [Testing Suite](testing.md)

@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_NAME="MovieBox-Tui"
-BIN_NAME="moviebox-tui"
-REPO="mesamirh/MovieBox-Tui"
+APP_NAME="MovieZen-TUI"
+BIN_NAME="moviezen"
+ALIAS_BIN_NAME="moviezen-tui"
+REPO="sufiyan-sabeel/MovieZen-TUI"
 DEFAULT_INSTALL_DIR="$HOME/.local/bin"
 
 VERSION=""
@@ -57,10 +58,10 @@ while [ $# -gt 0 ]; do
             ;;
         --help|-h)
             cat << 'EOF'
-MovieBox-TUI Installer
+MovieZen-TUI Installer
 
 USAGE:
-    curl -fsSL https://raw.githubusercontent.com/mesamirh/MovieBox-Tui/main/install.sh | bash -s -- [OPTIONS]
+    curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash -s -- [OPTIONS]
     ./install.sh [OPTIONS]
 
 OPTIONS:
@@ -69,7 +70,7 @@ OPTIONS:
     -f, --force            Reinstall even if already at the latest version
         --dry-run          Perform preflight checks without writing files
         --no-modify-path   Do not modify shell profile configuration
-        --uninstall        Uninstall MovieBox-TUI from your system
+        --uninstall        Uninstall MovieZen-TUI from your system
     -h, --help             Show this help message
 EOF
             exit 0
@@ -206,26 +207,16 @@ print_header() {
     local lines=()
     local banner_width=0
 
-    if [ "$cols" -ge 76 ]; then
-        banner_width=72
+    if [ "$cols" -ge 48 ]; then
+        banner_width=44
         lines=(
-            "███╗   ███╗  ██████╗  ██╗   ██╗ ██╗ ███████╗ ██████╗   ██████╗  ██╗  ██╗"
-            "████╗ ████║ ██╔═══██╗ ██║   ██║ ██║ ██╔════╝ ██╔══██╗ ██╔═══██╗ ╚██╗██╔╝"
-            "██╔████╔██║ ██║   ██║ ██║   ██║ ██║ █████╗   ██████╔╝ ██║   ██║  ╚███╔╝ "
-            "██║╚██╔╝██║ ██║   ██║ ╚██╗ ██╔╝ ██║ ██╔══╝   ██╔══██╗ ██║   ██║  ██╔██╗ "
-            "██║ ╚═╝ ██║ ╚██████╔╝  ╚████╔╝  ██║ ███████╗ ██████╔╝ ╚██████╔╝ ██╔╝ ██╗"
-            "╚═╝     ╚═╝  ╚═════╝    ╚═══╝   ╚═╝ ╚══════╝ ╚═════╝   ╚═════╝  ╚═╝  ╚═╝"
-        )
-    elif [ "$cols" -ge 36 ]; then
-        banner_width=31
-        lines=(
-            "█▀▄▀█ █▀█ █ █ █ █▀▀ █▀▄ █▀█ ▀▄▀"
-            "█ ▀ █ █▄█ ▀▄▀ █ ██▄ █▄▀ █▄█ █ █"
+            "█▀▄▀█ █▀█ █ █ █ █▀▀ ▀█ █▀▀ █▄ █    ▀█▀ █ █ █"
+            "█ ▀ █ █▄█ ▀▄▀ █ ██▄ █▄ ██▄ █ ▀█ ▀▀  █  █▄█ █"
         )
     else
         banner_width=12
         lines=(
-            "MovieBox-TUI"
+            "MovieZen-TUI"
         )
     fi
 
@@ -234,7 +225,7 @@ print_header() {
         banner_pad=$(( (cols - banner_width) / 2 ))
     fi
 
-    local sub="Official Installer"
+    local sub="Official Installer - Created by Umaiz Sufiyan"
     local sub_len=${#sub}
     local sub_pad=0
     if [ "$cols" -gt "$sub_len" ]; then
@@ -342,6 +333,9 @@ do_uninstall() {
     fi
 
     for path in "${target_paths[@]}"; do
+        if [ -n "$path" ]; then
+            rm -f "$(dirname "$path")/$ALIAS_BIN_NAME" 2>/dev/null || true
+        fi
         if [ -n "$path" ] && [ -f "$path" ]; then
             if [ -w "$path" ] || [ -w "$(dirname "$path")" ]; then
                 rm -f "$path"
@@ -382,18 +376,18 @@ fi
 
 if [ "$IS_TERMUX" -eq 1 ]; then
     if [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
-        FILE="MovieBox_Android_arm64.tar.gz"
+        FILE="MovieZen_Android_arm64.tar.gz"
         PLATFORM_NAME="Android Termux (arm64)"
     else
-        log_error "Unsupported Termux architecture ($ARCH). Only arm64/aarch64 is hosted. Use 'cargo install moviebox-tui'."
+        log_error "Unsupported Termux architecture ($ARCH). Only arm64/aarch64 is hosted. Use 'cargo install moviezen-tui'."
         exit 1
     fi
 elif [ "$OS" = "Darwin" ]; then
-    FILE="MovieBox_macOS_Universal.tar.gz"
+    FILE="MovieZen_macOS_Universal.tar.gz"
     PLATFORM_NAME="macOS (Universal)"
 elif [ "$OS" = "Linux" ]; then
     if [ "$ARCH" = "x86_64" ]; then
-        FILE="MovieBox_Linux_x64.tar.gz"
+        FILE="MovieZen_Linux_x64.tar.gz"
         PLATFORM_NAME="Linux (x86_64)"
     elif [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then
         if command -v getconf >/dev/null 2>&1 && [ "$(getconf LONG_BIT 2>/dev/null)" = "32" ]; then
@@ -401,10 +395,10 @@ elif [ "$OS" = "Linux" ]; then
             log_error "Prebuilt Linux ARM64 binaries require 64-bit userland (aarch64)."
             printf "\n  %bℹ%b To run on 32-bit Raspberry Pi OS, compile natively via cargo:\n" "$C_SAPPHIRE" "$C_RESET" >&2
             printf "    %bsudo apt update && sudo apt install -y pkg-config libssl-dev%b\n" "$C_BOLD" "$C_RESET" >&2
-            printf "    %bcargo install moviebox-tui --locked%b\n\n" "$C_BOLD" "$C_RESET" >&2
+            printf "    %bcargo install moviezen-tui --locked%b\n\n" "$C_BOLD" "$C_RESET" >&2
             exit 1
         fi
-        FILE="MovieBox_Linux_arm64.tar.gz"
+        FILE="MovieZen_Linux_arm64.tar.gz"
         PLATFORM_NAME="Linux (arm64)"
     else
         log_error "Unsupported Linux architecture ($ARCH). Only x86_64 and arm64 are supported."
@@ -427,7 +421,7 @@ resolve_version() {
         printf "%s" "$VERSION" > "$TMP_VER_FILE"
         return 0
     fi
-    if [ -n "${MOVIEBOX_RELEASE_URL:-}" ]; then
+    if [ -n "${MOVIEZEN_RELEASE_URL:-}" ]; then
         printf "%s" "local-test" > "$TMP_VER_FILE"
         return 0
     fi
@@ -477,7 +471,7 @@ if [ -n "$EXISTING_BIN" ] && [ -x "$EXISTING_BIN" ]; then
 
     if [ "v$CURRENT_VERSION" = "$TARGET_VERSION" ] && [ "$FORCE" -eq 0 ]; then
         if [ "$IS_TTY" -eq 1 ] && [ "$DRY_RUN" -eq 0 ]; then
-            printf "\n  %b%s%b %b%s%b\n" "$C_YELLOW" "ℹ" "$C_RESET" "$C_TEXT" "MovieBox-TUI $TARGET_VERSION is already installed at $EXISTING_BIN." "$C_RESET"
+            printf "\n  %b%s%b %b%s%b\n" "$C_YELLOW" "ℹ" "$C_RESET" "$C_TEXT" "MovieZen-TUI $TARGET_VERSION is already installed at $EXISTING_BIN." "$C_RESET"
             printf "  Choose an action: [1] Reinstall  [2] Uninstall  [3] Exit: "
             if [ -e /dev/tty ]; then
                 read -r user_choice </dev/tty 2>/dev/null || user_choice="3"
@@ -497,7 +491,7 @@ if [ -n "$EXISTING_BIN" ] && [ -x "$EXISTING_BIN" ]; then
                     ;;
             esac
         else
-            log_success "MovieBox-TUI $TARGET_VERSION is already installed. Use --force to reinstall."
+            log_success "MovieZen-TUI $TARGET_VERSION is already installed. Use --force to reinstall."
             exit 0
         fi
     fi
@@ -512,9 +506,9 @@ fi
 
 TMP_DIR=$(mktemp -d)
 
-if [ -n "${MOVIEBOX_RELEASE_URL:-}" ]; then
-    URL="${MOVIEBOX_RELEASE_URL%/}/$FILE"
-    CHECKSUM_URL="${MOVIEBOX_RELEASE_URL%/}/SHA256SUMS"
+if [ -n "${MOVIEZEN_RELEASE_URL:-}" ]; then
+    URL="${MOVIEZEN_RELEASE_URL%/}/$FILE"
+    CHECKSUM_URL="${MOVIEZEN_RELEASE_URL%/}/SHA256SUMS"
 else
     URL="https://github.com/$REPO/releases/download/$TARGET_VERSION/$FILE"
     CHECKSUM_URL="https://github.com/$REPO/releases/download/$TARGET_VERSION/SHA256SUMS"
@@ -527,7 +521,7 @@ download_files() {
             log_error "Failed to download $FILE."
             printf "  %bℹ%b Precompiled native Android binaries are hosted starting from v0.1.17+.\n" "$C_SAPPHIRE" "$C_RESET" >&2
             printf "  To install from source on Termux:\n" >&2
-            printf "    %bpkg install -y rust clang && cargo install moviebox-tui --locked%b\n\n" "$C_BOLD" "$C_RESET" >&2
+            printf "    %bpkg install -y rust clang && cargo install moviezen-tui --locked%b\n\n" "$C_BOLD" "$C_RESET" >&2
         fi
         return 1
     fi
@@ -577,6 +571,12 @@ install_binary() {
     rm -f "$APP_PATH"
     cp "$TMP_DIR/$BIN_NAME" "$APP_PATH"
     chmod 755 "$APP_PATH"
+
+    # Secondary command alias (moviezen-tui -> moviezen). Best effort: the
+    # primary command works without it.
+    local alias_path="$INSTALL_DIR/$ALIAS_BIN_NAME"
+    rm -f "$alias_path"
+    ln -s "$BIN_NAME" "$alias_path" 2>/dev/null || cp "$APP_PATH" "$alias_path" 2>/dev/null || true
 }
 
 run_spinner "[4/4] Installing binary to $INSTALL_DIR" install_binary || exit 1
@@ -596,10 +596,10 @@ if [ "$DRY_RUN" -eq 0 ]; then
         fi
         if [ "$IS_TERMUX" -eq 1 ]; then
             printf "\n  %bℹ%b If Termux rejects the binary, install via cargo:\n" "$C_SAPPHIRE" "$C_RESET" >&2
-            printf "    %bpkg install -y rust clang && cargo install moviebox-tui --locked%b\n\n" "$C_BOLD" "$C_RESET" >&2
+            printf "    %bpkg install -y rust clang && cargo install moviezen-tui --locked%b\n\n" "$C_BOLD" "$C_RESET" >&2
         elif [ "$OS" = "Linux" ] && { [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; }; then
             printf "\n  %bℹ%b If your Linux distribution kernel or environment rejects the binary, install via cargo:\n" "$C_SAPPHIRE" "$C_RESET" >&2
-            printf "    %bcargo install moviebox-tui --locked%b\n\n" "$C_BOLD" "$C_RESET" >&2
+            printf "    %bcargo install moviezen-tui --locked%b\n\n" "$C_BOLD" "$C_RESET" >&2
         fi
         exit 1
     fi
@@ -662,7 +662,7 @@ else
     fi
 fi
 printf "\n"
-printf "  %b✔ MovieBox-Tui %s successfully installed!%b\n\n" "$C_GREEN" "$TARGET_VERSION" "$C_RESET"
+printf "  %b✔ MovieZen-TUI %s successfully installed!%b\n\n" "$C_GREEN" "$TARGET_VERSION" "$C_RESET"
 printf "  %b•%b %bBinary:%b  %b%s%b\n" "$C_MUTED" "$C_RESET" "$C_MUTED" "$C_RESET" "$C_TEXT" "$APP_PATH" "$C_RESET"
 
 if [ -n "$PLAYER_DETECTED" ]; then
@@ -679,7 +679,7 @@ fi
 
 printf "\n"
 printf "  %bTo start streaming:%b\n" "$C_TEXT" "$C_RESET"
-printf "    %b$ moviebox-tui%b\n\n" "$C_GREEN" "$C_RESET"
+printf "    %b$ moviezen%b\n\n" "$C_GREEN" "$C_RESET"
 
 if [ -z "$PLAYER_DETECTED" ]; then
     if [ "$IS_TERMUX" -eq 1 ]; then

@@ -18,17 +18,18 @@ try {
 } catch {}
 Set-StrictMode -Version Latest
 
-$AppName = "MovieBox-Tui"
-$BinName = "moviebox-tui.exe"
-$Repo = "mesamirh/MovieBox-Tui"
-$DefaultInstallDir = Join-Path $env:LOCALAPPDATA "Programs\MovieBox-Tui\bin"
+$AppName = "MovieZen-TUI"
+$BinName = "moviezen.exe"
+$AliasBinName = "moviezen-tui.exe"
+$Repo = "sufiyan-sabeel/MovieZen-TUI"
+$DefaultInstallDir = Join-Path $env:LOCALAPPDATA "Programs\MovieZen-TUI\bin"
 
 if ($Help) {
     Write-Host @"
-MovieBox-TUI Installer (Windows PowerShell)
+MovieZen-TUI Installer (Windows PowerShell)
 
 USAGE:
-    irm https://raw.githubusercontent.com/mesamirh/MovieBox-Tui/main/install.ps1 | iex
+    irm https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.ps1 | iex
     .\install.ps1 [OPTIONS]
 
 OPTIONS:
@@ -37,7 +38,7 @@ OPTIONS:
     -Force               Reinstall even if already at the latest version
     -DryRun              Perform preflight checks without writing files
     -NoModifyPath        Do not modify User PATH environment variable
-    -Uninstall           Uninstall MovieBox-TUI from your system
+    -Uninstall           Uninstall MovieZen-TUI from your system
     -Help                Show this help message
 "@
     return
@@ -129,30 +130,21 @@ function Get-TerminalCols {
 function Print-Header {
     $Cols = Get-TerminalCols
 
-    if ($Cols -ge 65) {
-        $BannerWidth = 60
+    if ($Cols -ge 48) {
+        $BannerWidth = 44
         $Lines = @(
-            " __  __            _      ____              _____ _   _ ___ ",
-            "|  \/  | _____   _(_) ___| __ )  _____  __ |_   _| | | |_ _|",
-            "| |\/| |/ _ \ \ / / |/ _ \  _ \ / _ \ \/ /   | | | | | || | ",
-            "| |  | | (_) \ V /| |  __/ |_) | (_) >  <    | | | |_| || | ",
-            "|_|  |_|\___/ \_/ |_|\___|____/ \___/_/\_\   |_|  \___/|___|"
-        )
-    } elseif ($Cols -ge 36) {
-        $BannerWidth = 31
-        $Lines = @(
-            "█▀▄▀█ █▀█ █ █ █ █▀▀ █▀▄ █▀█ ▀▄▀",
-            "█ ▀ █ █▄█ ▀▄▀ █ ██▄ █▄▀ █▄█ █ █"
+            "█▀▄▀█ █▀█ █ █ █ █▀▀ ▀█ █▀▀ █▄ █    ▀█▀ █ █ █",
+            "█ ▀ █ █▄█ ▀▄▀ █ ██▄ █▄ ██▄ █ ▀█ ▀▀  █  █▄█ █"
         )
     } else {
         $BannerWidth = 12
         $Lines = @(
-            "MovieBox-TUI"
+            "MovieZen-TUI"
         )
     }
 
     $BannerPad = [Math]::Max(0, [int][Math]::Floor(($Cols - $BannerWidth) / 2))
-    $Sub = "Official Installer"
+    $Sub = "Official Installer - Created by Umaiz Sufiyan"
     $SubPad = [Math]::Max(0, [int][Math]::Floor(($Cols - $Sub.Length) / 2))
 
     foreach ($Line in $Lines) {
@@ -177,19 +169,21 @@ function Do-Uninstall {
     $Found = $false
     $TargetDirs = @(
         $DefaultInstallDir,
-        "$env:LOCALAPPDATA\MovieBox-Tui"
+        "$env:LOCALAPPDATA\MovieZen-TUI"
     )
 
     foreach ($Dir in $TargetDirs) {
         $Exe = Join-Path $Dir $BinName
         if (Test-Path $Exe) {
             try {
-                $RunningProcesses = Get-Process -Name "moviebox-tui" -ErrorAction SilentlyContinue
+                $RunningProcesses = Get-Process -Name "moviezen" -ErrorAction SilentlyContinue
                 if ($RunningProcesses) {
                     $RunningProcesses | Stop-Process -Force
                     Start-Sleep -Seconds 1
                 }
                 Remove-Item -Path $Exe -Force -ErrorAction SilentlyContinue
+                $Alias = Join-Path $Dir $AliasBinName
+                Remove-Item -Path $Alias -Force -ErrorAction SilentlyContinue
                 Write-Success "Removed $Exe"
                 $Found = $true
             } catch {
@@ -199,7 +193,7 @@ function Do-Uninstall {
     }
 
     if ($Found) {
-        $Removed = Remove-FromUserPath -Directories @($DefaultInstallDir, "$env:LOCALAPPDATA\MovieBox-Tui\bin")
+        $Removed = Remove-FromUserPath -Directories @($DefaultInstallDir, "$env:LOCALAPPDATA\MovieZen-TUI\bin")
         Write-Success "$AppName was successfully uninstalled."
         if ($Removed) {
             Write-Success "Removed stale entry from User PATH."
@@ -219,10 +213,10 @@ Print-Header
 
 $Architecture = if ($env:PROCESSOR_ARCHITEW6432) { $env:PROCESSOR_ARCHITEW6432 } else { $env:PROCESSOR_ARCHITECTURE }
 if ($Architecture -eq "ARM64") {
-    $ArchiveName = "MovieBox_Windows_arm64.zip"
+    $ArchiveName = "MovieZen_Windows_arm64.zip"
     $PlatformName = "Windows (arm64)"
 } elseif ($Architecture -eq "AMD64") {
-    $ArchiveName = "MovieBox_Windows_x64.zip"
+    $ArchiveName = "MovieZen_Windows_x64.zip"
     $PlatformName = "Windows (x64)"
 } else {
     Write-Err "Unsupported Windows architecture: $Architecture"
@@ -285,10 +279,10 @@ if (Test-Path $ExePath) {
         } else {
             try {
                 $CurrentVerOutput = (& $ExePath --version 2>&1 | Out-String)
-                if ($CurrentVerOutput -match "moviebox-tui\s+([\d\.]+)") {
+                if ($CurrentVerOutput -match "moviezen\s+([\d\.]+)") {
                     $CurrentVer = "v" + $matches[1]
                     if ($CurrentVer -eq $TargetVersion) {
-                        Write-Success "MovieBox-TUI $TargetVersion is already installed at $ExePath. Use -Force to reinstall."
+                        Write-Success "MovieZen-TUI $TargetVersion is already installed at $ExePath. Use -Force to reinstall."
                         return
                     }
                 }
@@ -304,7 +298,7 @@ if ($DryRun) {
     return
 }
 
-$TempDir = Join-Path ([System.IO.Path]::GetTempPath()) ("moviebox-tui-" + [guid]::NewGuid())
+$TempDir = Join-Path ([System.IO.Path]::GetTempPath()) ("moviezen-" + [guid]::NewGuid())
 New-Item -ItemType Directory -Force -Path $TempDir | Out-Null
 
 $ZipFile = Join-Path $TempDir $ArchiveName
@@ -336,7 +330,7 @@ try {
         New-Item -ItemType Directory -Force -Path $EffectiveInstallDir | Out-Null
     }
 
-    $RunningProcesses = Get-Process -Name "moviebox-tui" -ErrorAction SilentlyContinue
+    $RunningProcesses = Get-Process -Name "moviezen" -ErrorAction SilentlyContinue
     if ($RunningProcesses) {
         $RunningProcesses | Stop-Process -Force
         Start-Sleep -Seconds 1
@@ -351,6 +345,9 @@ try {
     try { Unblock-File -Path $ExtractedExe -ErrorAction SilentlyContinue } catch {}
     Move-Item -Path $ExtractedExe -Destination $ExePath -Force
     try { Unblock-File -Path $ExePath -ErrorAction SilentlyContinue } catch {}
+    # Secondary command alias (moviezen-tui.exe -> moviezen.exe). Best effort.
+    $AliasPath = Join-Path $EffectiveInstallDir $AliasBinName
+    try { Copy-Item -Path $ExePath -Destination $AliasPath -Force } catch {}
     try {
         $SmokeOutput = (& $ExePath --version 2>&1 | Out-String)
         if ($LASTEXITCODE -ne 0) {
@@ -386,7 +383,7 @@ if ((Get-Command "mpv" -ErrorAction SilentlyContinue) -or (Test-Path "C:\Program
 }
 
 Write-Host ""
-Write-Host "  + MovieBox-Tui $TargetVersion successfully installed!" -ForegroundColor Green
+Write-Host "  + MovieZen-TUI $TargetVersion successfully installed!" -ForegroundColor Green
 Write-Host ""
 Write-Host "  - Binary:  " -ForegroundColor DarkGray -NoNewline
 Write-Host $ExePath -ForegroundColor White
@@ -406,7 +403,7 @@ if ($PathModified) {
 
 Write-Host ""
 Write-Host "  To start streaming:" -ForegroundColor White
-Write-Host "    moviebox-tui" -ForegroundColor Green
+Write-Host "    moviezen" -ForegroundColor Green
 Write-Host ""
 
 if (-not $PlayerDetected) {

@@ -88,13 +88,15 @@ pub fn landing_split(
     let tier = HomeLayoutTier::for_width(area.width);
     let compact_logo = tier.is_compact() || (tv_mode && area.width < 80);
     let effective_basic = basic_terminal || compact_logo;
-    let logo_height = if effective_basic { 2 } else { 6 };
-    let logo_width = if effective_basic {
-        if tv_mode { 33 } else { 31 }
-    } else if tv_mode {
-        75
+    let logo_height = if effective_basic {
+        crate::branding::LOGO_COMPACT_HEIGHT
     } else {
-        73
+        crate::branding::LOGO_FULL_HEIGHT
+    };
+    let logo_width = if effective_basic {
+        crate::branding::LOGO_COMPACT_WIDTH
+    } else {
+        crate::branding::LOGO_FULL_WIDTH
     };
     let top_pad = if area.height < 24 { 1 } else { 2 };
     let header_gap = if area.height < 24 { 1 } else { 2 };
@@ -1386,29 +1388,11 @@ pub fn draw(frame: &mut Frame, area: Rect, state: &mut AppState, theme: &Theme) 
         );
         let vertical_chunks = &rows.rects;
 
-        let logo_text: &'static str = if basic_terminal || tier.is_compact() {
-            if state.is_tv_mode {
-                "█▀▄▀█ █▀█ █ █ █ █▀▀ █▀▄ █▀█ ▀▄▀\n█ ▀ █ █▄█ ▀▄▀ █ ██▄ █▄▀ █▄█ █ █TV"
-            } else {
-                "█▀▄▀█ █▀█ █ █ █ █▀▀ █▀▄ █▀█ ▀▄▀\n█ ▀ █ █▄█ ▀▄▀ █ ██▄ █▄▀ █▄█ █ █"
-            }
-        } else if state.is_tv_mode {
-            r"███╗   ███╗  ██████╗  ██╗   ██╗ ██╗ ███████╗ ██████╗   ██████╗  ██╗  ██╗
-████╗ ████║ ██╔═══██╗ ██║   ██║ ██║ ██╔════╝ ██╔══██╗ ██╔═══██╗ ╚██╗██╔╝
-██╔████╔██║ ██║   ██║ ██║   ██║ ██║ █████╗   ██████╔╝ ██║   ██║  ╚███╔╝ 
-██║╚██╔╝██║ ██║   ██║ ╚██╗ ██╔╝ ██║ ██╔══╝   ██╔══██╗ ██║   ██║  ██╔██╗ TV
-██║ ╚═╝ ██║ ╚██████╔╝  ╚████╔╝  ██║ ███████╗ ██████╔╝ ╚██████╔╝ ██╔╝ ██╗
-╚═╝     ╚═╝  ╚═════╝    ╚═══╝   ╚═╝ ╚══════╝ ╚═════╝   ╚═════╝  ╚═╝  ╚═╝"
-        } else {
-            r"███╗   ███╗  ██████╗  ██╗   ██╗ ██╗ ███████╗ ██████╗   ██████╗  ██╗  ██╗
-████╗ ████║ ██╔═══██╗ ██║   ██║ ██║ ██╔════╝ ██╔══██╗ ██╔═══██╗ ╚██╗██╔╝
-██╔████╔██║ ██║   ██║ ██║   ██║ ██║ █████╗   ██████╔╝ ██║   ██║  ╚███╔╝ 
-██║╚██╔╝██║ ██║   ██║ ╚██╗ ██╔╝ ██║ ██╔══╝   ██╔══██╗ ██║   ██║  ██╔██╗ 
-██║ ╚═╝ ██║ ╚██████╔╝  ╚████╔╝  ██║ ███████╗ ██████╔╝ ╚██████╔╝ ██╔╝ ██╗
-╚═╝     ╚═╝  ╚═════╝    ╚═══╝   ╚═╝ ╚══════╝ ╚═════╝   ╚═════╝  ╚═╝  ╚═╝"
-        };
+        let (logo_text, brand_width) = crate::branding::wordmark(
+            basic_terminal || tier.is_compact() || (state.is_tv_mode && area.width < 80),
+        );
 
-        let logo_width: u16 = rows.logo_width;
+        let logo_width: u16 = rows.logo_width.max(brand_width);
 
         let pad = area.width.saturating_sub(logo_width) / 2;
         let horizontal_chunks = Layout::default()

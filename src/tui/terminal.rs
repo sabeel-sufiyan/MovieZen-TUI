@@ -42,11 +42,11 @@ fn outer_terminal_supports_graphics() -> bool {
 }
 
 pub fn should_query_images() -> bool {
-    if std::env::var("MOVIEBOX_NO_IMAGE").is_ok_and(|v| v == "1" || v.eq_ignore_ascii_case("true"))
+    if std::env::var("MOVIEZEN_NO_IMAGE").is_ok_and(|v| v == "1" || v.eq_ignore_ascii_case("true"))
     {
         return false;
     }
-    if let Ok(forced) = std::env::var("MOVIEBOX_IMAGE_PROTOCOL") {
+    if let Ok(forced) = std::env::var("MOVIEZEN_IMAGE_PROTOCOL") {
         let forced = forced.trim();
         if forced.eq_ignore_ascii_case("none")
             || forced.eq_ignore_ascii_case("off")
@@ -59,7 +59,7 @@ pub fn should_query_images() -> bool {
         }
     }
     if is_inside_tmux()
-        && std::env::var("MOVIEBOX_IMAGE_PROTOCOL").is_err()
+        && std::env::var("MOVIEZEN_IMAGE_PROTOCOL").is_err()
         && !outer_terminal_supports_graphics()
     {
         return false;
@@ -119,13 +119,13 @@ mod tests {
     #[test]
     fn test_should_query_images_guards() {
         unsafe {
-            std::env::set_var("MOVIEBOX_NO_IMAGE", "1");
+            std::env::set_var("MOVIEZEN_NO_IMAGE", "1");
             assert!(!should_query_images());
-            std::env::remove_var("MOVIEBOX_NO_IMAGE");
+            std::env::remove_var("MOVIEZEN_NO_IMAGE");
 
-            std::env::set_var("MOVIEBOX_IMAGE_PROTOCOL", "none");
+            std::env::set_var("MOVIEZEN_IMAGE_PROTOCOL", "none");
             assert!(!should_query_images());
-            std::env::remove_var("MOVIEBOX_IMAGE_PROTOCOL");
+            std::env::remove_var("MOVIEZEN_IMAGE_PROTOCOL");
 
             std::env::set_var("TERM_PROGRAM", "Apple_Terminal");
             assert!(!should_query_images());
@@ -134,9 +134,9 @@ mod tests {
             std::env::set_var("TERM", "dumb");
             assert!(!should_query_images());
             std::env::remove_var("TERM");
-            std::env::set_var("MOVIEBOX_IMAGE_PROTOCOL", "kitty");
+            std::env::set_var("MOVIEZEN_IMAGE_PROTOCOL", "kitty");
             assert!(should_query_images());
-            std::env::remove_var("MOVIEBOX_IMAGE_PROTOCOL");
+            std::env::remove_var("MOVIEZEN_IMAGE_PROTOCOL");
             let saved_vars = [
                 "GHOSTTY_RESOURCES_DIR",
                 "KITTY_WINDOW_ID",
@@ -162,9 +162,9 @@ mod tests {
             assert!(should_query_images());
             std::env::remove_var("GHOSTTY_RESOURCES_DIR");
 
-            std::env::set_var("MOVIEBOX_IMAGE_PROTOCOL", "kitty");
+            std::env::set_var("MOVIEZEN_IMAGE_PROTOCOL", "kitty");
             assert!(should_query_images());
-            std::env::remove_var("MOVIEBOX_IMAGE_PROTOCOL");
+            std::env::remove_var("MOVIEZEN_IMAGE_PROTOCOL");
             std::env::remove_var("TMUX");
 
             for (k, val) in saved_vars {

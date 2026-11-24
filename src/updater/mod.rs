@@ -152,33 +152,33 @@ mod tests {
             notes: "Bug fixes and improvements".to_string(),
             assets: vec![
                 ReleaseAsset {
-                    name: "MovieBox_macOS_Universal.tar.gz".to_string(),
-                    download_url: "https://github.com/mesamirh/MovieBox-Tui/releases/download/v0.1.13/MovieBox_macOS_Universal.tar.gz".to_string(),
+                    name: "MovieZen_macOS_Universal.tar.gz".to_string(),
+                    download_url: "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v0.1.13/MovieZen_macOS_Universal.tar.gz".to_string(),
                     size: Some(15_000_000),
                 },
                 ReleaseAsset {
-                    name: "MovieBox_Linux_x64.tar.gz".to_string(),
-                    download_url: "https://github.com/mesamirh/MovieBox-Tui/releases/download/v0.1.13/MovieBox_Linux_x64.tar.gz".to_string(),
+                    name: "MovieZen_Linux_x64.tar.gz".to_string(),
+                    download_url: "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v0.1.13/MovieZen_Linux_x64.tar.gz".to_string(),
                     size: Some(12_000_000),
                 },
                 ReleaseAsset {
-                    name: "MovieBox_Linux_arm64.tar.gz".to_string(),
-                    download_url: "https://github.com/mesamirh/MovieBox-Tui/releases/download/v0.1.13/MovieBox_Linux_arm64.tar.gz".to_string(),
+                    name: "MovieZen_Linux_arm64.tar.gz".to_string(),
+                    download_url: "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v0.1.13/MovieZen_Linux_arm64.tar.gz".to_string(),
                     size: Some(11_500_000),
                 },
                 ReleaseAsset {
-                    name: "MovieBox_Windows_x64.zip".to_string(),
-                    download_url: "https://github.com/mesamirh/MovieBox-Tui/releases/download/v0.1.13/MovieBox_Windows_x64.zip".to_string(),
+                    name: "MovieZen_Windows_x64.zip".to_string(),
+                    download_url: "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v0.1.13/MovieZen_Windows_x64.zip".to_string(),
                     size: Some(13_000_000),
                 },
                 ReleaseAsset {
-                    name: "MovieBox_Windows_arm64.zip".to_string(),
-                    download_url: "https://github.com/mesamirh/MovieBox-Tui/releases/download/v0.1.13/MovieBox_Windows_arm64.zip".to_string(),
+                    name: "MovieZen_Windows_arm64.zip".to_string(),
+                    download_url: "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v0.1.13/MovieZen_Windows_arm64.zip".to_string(),
                     size: Some(12_500_000),
                 },
                 ReleaseAsset {
                     name: "SHA256SUMS".to_string(),
-                    download_url: "https://github.com/mesamirh/MovieBox-Tui/releases/download/v0.1.13/SHA256SUMS".to_string(),
+                    download_url: "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v0.1.13/SHA256SUMS".to_string(),
                     size: Some(512),
                 },
             ],
@@ -191,23 +191,23 @@ mod tests {
 
         let mac_platform = TargetPlatform::detect("macos", "aarch64", false).unwrap();
         let mac_asset = release.find_compatible_asset(mac_platform).unwrap();
-        assert_eq!(mac_asset.name, "MovieBox_macOS_Universal.tar.gz");
+        assert_eq!(mac_asset.name, "MovieZen_macOS_Universal.tar.gz");
 
         let linux_x64 = TargetPlatform::detect("linux", "x86_64", false).unwrap();
         let linux_x64_asset = release.find_compatible_asset(linux_x64).unwrap();
-        assert_eq!(linux_x64_asset.name, "MovieBox_Linux_x64.tar.gz");
+        assert_eq!(linux_x64_asset.name, "MovieZen_Linux_x64.tar.gz");
 
         let linux_arm64 = TargetPlatform::detect("linux", "aarch64", false).unwrap();
         let linux_arm64_asset = release.find_compatible_asset(linux_arm64).unwrap();
-        assert_eq!(linux_arm64_asset.name, "MovieBox_Linux_arm64.tar.gz");
+        assert_eq!(linux_arm64_asset.name, "MovieZen_Linux_arm64.tar.gz");
 
         let win_x64 = TargetPlatform::detect("windows", "x86_64", false).unwrap();
         let win_x64_asset = release.find_compatible_asset(win_x64).unwrap();
-        assert_eq!(win_x64_asset.name, "MovieBox_Windows_x64.zip");
+        assert_eq!(win_x64_asset.name, "MovieZen_Windows_x64.zip");
 
         let win_arm64 = TargetPlatform::detect("windows", "arm64", false).unwrap();
         let win_arm64_asset = release.find_compatible_asset(win_arm64).unwrap();
-        assert_eq!(win_arm64_asset.name, "MovieBox_Windows_arm64.zip");
+        assert_eq!(win_arm64_asset.name, "MovieZen_Windows_arm64.zip");
 
         let checksum = release.find_checksum_asset().unwrap();
         assert_eq!(checksum.name, "SHA256SUMS");
@@ -220,7 +220,7 @@ mod tests {
             tag_name: "v0.1.13".to_string(),
             notes: "Partial release".to_string(),
             assets: vec![ReleaseAsset {
-                name: "MovieBox_Linux_x64.tar.gz".to_string(),
+                name: "MovieZen_Linux_x64.tar.gz".to_string(),
                 download_url: "https://...".to_string(),
                 size: Some(1000),
             }],
@@ -261,6 +261,6 @@ mod tests {
         let a1 = release.find_compatible_asset(platform);
         let a2 = release.find_compatible_asset(platform);
         assert_eq!(a1, a2);
-        assert_eq!(a1.unwrap().name, "MovieBox_Linux_x64.tar.gz");
+        assert_eq!(a1.unwrap().name, "MovieZen_Linux_x64.tar.gz");
     }
 }

@@ -28,6 +28,8 @@ jobs:
         with:
           prefix-key: "ci-hygiene"
       - run: cargo fmt --check
+      - name: Verify branding guard
+        run: bash .github/scripts/verify-branding.sh
       - name: Validate Unix installer syntax
         run: bash -n install.sh
       - name: Validate Windows installer syntax
@@ -85,8 +87,27 @@ jobs:
           tool: cargo-nextest
       - name: Run test suite with isolated configuration
         env:
-          MOVIEBOX_CONFIG_DIR: ${{ runner.temp }}/mb_config
-          MOVIEBOX_DATA_DIR: ${{ runner.temp }}/mb_data
+          MOVIEZEN_CONFIG_DIR: ${{ runner.temp }}/mb_config
+          MOVIEZEN_DATA_DIR: ${{ runner.temp }}/mb_data
         run: cargo nextest run --all-features --locked
       - name: Smoke-test binary startup
         run: cargo run --all-features --locked -- --version
+      - name: Smoke-test the wordmark output
+        run: cargo run --all-features --locked -- --logo
+
+  npm-wrapper:
+    name: npm wrapper
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+      - name: Test the npm distribution wrapper
+        run: node npm/test/smoke.js
+      - name: Verify the package manifest
+        working-directory: npm
+        run: |
+          node -e "const p=require('./package.json'); if(p.name!=='moviezen-tui') throw new Error('wrong package name'); if(!p.bin.moviezen||!p.bin['moviezen-tui']) throw new Error('missing bin entries');"
+          npm pack --dry-run

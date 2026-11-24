@@ -686,7 +686,7 @@ pub fn clear_all_cache() -> Result<(), String> {
     if sub_dir.exists() {
         purge_subtitle_cache_files(&sub_dir, &mut errors);
     }
-    let temp_subs = std::env::temp_dir().join("moviebox-tui").join("subs");
+    let temp_subs = std::env::temp_dir().join("moviezen").join("subs");
     if temp_subs.exists() {
         purge_subtitle_cache_files(&temp_subs, &mut errors);
     }

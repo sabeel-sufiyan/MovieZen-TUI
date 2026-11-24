@@ -53,7 +53,20 @@ impl Default for Config {
     }
 }
 
-pub const APP_NAME: &str = "moviebox-tui";
+pub const APP_NAME: &str = "moviezen";
+
+/// Directory name used by the upstream MovieBox-Tui releases. Existing installs
+/// keep their settings, library and cache by reusing it until a MovieZen
+/// directory of their own exists.
+const LEGACY_APP_NAME: &str = "moviebox-tui";
+
+fn prefer_existing(candidate: PathBuf, legacy: PathBuf) -> PathBuf {
+    if candidate.exists() || !legacy.exists() {
+        candidate
+    } else {
+        legacy
+    }
+}
 
 static TEST_SANDBOX_DIR: std::sync::LazyLock<Option<PathBuf>> = std::sync::LazyLock::new(|| {
     let is_test_binary = cfg!(test)
@@ -88,11 +101,14 @@ pub fn config_dir() -> Option<PathBuf> {
     if let Some(sandbox) = TEST_SANDBOX_DIR.as_ref() {
         return Some(sandbox.join("config").join(APP_NAME));
     }
-    if let Ok(dir) = std::env::var("MOVIEBOX_CONFIG_DIR") {
+    if let Ok(dir) = std::env::var("MOVIEZEN_CONFIG_DIR") {
         return Some(PathBuf::from(dir));
     }
     if let Some(dir) = dirs::config_dir() {
-        return Some(dir.join(APP_NAME));
+        return Some(prefer_existing(
+            dir.join(APP_NAME),
+            dir.join(LEGACY_APP_NAME),
+        ));
     }
     if let Ok(xdg) = std::env::var("XDG_CONFIG_HOME") {
         let p = PathBuf::from(xdg);
@@ -121,11 +137,14 @@ pub fn data_dir() -> Option<PathBuf> {
     if let Some(sandbox) = TEST_SANDBOX_DIR.as_ref() {
         return Some(sandbox.join("data").join(APP_NAME));
     }
-    if let Ok(dir) = std::env::var("MOVIEBOX_DATA_DIR") {
+    if let Ok(dir) = std::env::var("MOVIEZEN_DATA_DIR") {
         return Some(PathBuf::from(dir));
     }
     if let Some(dir) = dirs::data_dir() {
-        return Some(dir.join(APP_NAME));
+        return Some(prefer_existing(
+            dir.join(APP_NAME),
+            dir.join(LEGACY_APP_NAME),
+        ));
     }
     if let Ok(xdg) = std::env::var("XDG_DATA_HOME") {
         let p = PathBuf::from(xdg);
@@ -154,11 +173,11 @@ pub fn cache_dir() -> PathBuf {
     if let Some(sandbox) = TEST_SANDBOX_DIR.as_ref() {
         return sandbox.join("cache").join(APP_NAME);
     }
-    if let Ok(dir) = std::env::var("MOVIEBOX_CACHE_DIR") {
+    if let Ok(dir) = std::env::var("MOVIEZEN_CACHE_DIR") {
         return PathBuf::from(dir);
     }
     if let Some(dir) = dirs::cache_dir() {
-        return dir.join(APP_NAME);
+        return prefer_existing(dir.join(APP_NAME), dir.join(LEGACY_APP_NAME));
     }
     if let Ok(xdg) = std::env::var("XDG_CACHE_HOME") {
         let p = PathBuf::from(xdg);

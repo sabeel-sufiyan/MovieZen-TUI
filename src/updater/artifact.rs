@@ -54,18 +54,18 @@ impl TargetPlatform {
 
     pub fn expected_asset_name(self) -> &'static str {
         match self {
-            Self::MacosUniversal => "MovieBox_macOS_Universal.tar.gz",
-            Self::LinuxX64 => "MovieBox_Linux_x64.tar.gz",
-            Self::LinuxArm64 => "MovieBox_Linux_arm64.tar.gz",
-            Self::WindowsX64 => "MovieBox_Windows_x64.zip",
-            Self::WindowsArm64 => "MovieBox_Windows_arm64.zip",
+            Self::MacosUniversal => "MovieZen_macOS_Universal.tar.gz",
+            Self::LinuxX64 => "MovieZen_Linux_x64.tar.gz",
+            Self::LinuxArm64 => "MovieZen_Linux_arm64.tar.gz",
+            Self::WindowsX64 => "MovieZen_Windows_x64.zip",
+            Self::WindowsArm64 => "MovieZen_Windows_arm64.zip",
         }
     }
 
     pub fn expected_binary_name(self) -> &'static str {
         match self {
-            Self::WindowsX64 | Self::WindowsArm64 => "moviebox-tui.exe",
-            _ => "moviebox-tui",
+            Self::WindowsX64 | Self::WindowsArm64 => "moviezen.exe",
+            _ => "moviezen",
         }
     }
 }
@@ -81,7 +81,7 @@ impl Release {
             return Some(ReleaseAsset {
                 name: expected.to_string(),
                 download_url: format!(
-                    "https://github.com/mesamirh/MovieBox-Tui/releases/download/{}/{expected}",
+                    "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/{}/{expected}",
                     self.tag_name
                 ),
                 size: None,
@@ -98,7 +98,7 @@ impl Release {
             return Some(ReleaseAsset {
                 name: "SHA256SUMS".to_string(),
                 download_url: format!(
-                    "https://github.com/mesamirh/MovieBox-Tui/releases/download/{}/SHA256SUMS",
+                    "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/{}/SHA256SUMS",
                     self.tag_name
                 ),
                 size: None,
@@ -130,19 +130,19 @@ mod tests {
         let linux_asset = empty_assets_release
             .find_compatible_asset(TargetPlatform::LinuxX64)
             .expect("should generate synthetic asset");
-        assert_eq!(linux_asset.name, "MovieBox_Linux_x64.tar.gz");
+        assert_eq!(linux_asset.name, "MovieZen_Linux_x64.tar.gz");
         assert_eq!(
             linux_asset.download_url,
-            "https://github.com/mesamirh/MovieBox-Tui/releases/download/v0.1.16/MovieBox_Linux_x64.tar.gz"
+            "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v0.1.16/MovieZen_Linux_x64.tar.gz"
         );
 
         let mac_asset = empty_assets_release
             .find_compatible_asset(TargetPlatform::MacosUniversal)
             .expect("should generate synthetic asset");
-        assert_eq!(mac_asset.name, "MovieBox_macOS_Universal.tar.gz");
+        assert_eq!(mac_asset.name, "MovieZen_macOS_Universal.tar.gz");
         assert_eq!(
             mac_asset.download_url,
-            "https://github.com/mesamirh/MovieBox-Tui/releases/download/v0.1.16/MovieBox_macOS_Universal.tar.gz"
+            "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v0.1.16/MovieZen_macOS_Universal.tar.gz"
         );
 
         let checksum = empty_assets_release
@@ -151,7 +151,7 @@ mod tests {
         assert_eq!(checksum.name, "SHA256SUMS");
         assert_eq!(
             checksum.download_url,
-            "https://github.com/mesamirh/MovieBox-Tui/releases/download/v0.1.16/SHA256SUMS"
+            "https://github.com/sufiyan-sabeel/MovieZen-TUI/releases/download/v0.1.16/SHA256SUMS"
         );
     }
 

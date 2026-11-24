@@ -244,7 +244,7 @@ impl App {
         state.download_dir = config.download_dir.map(std::path::PathBuf::from);
         state.installed_addons = crate::config::load_addons();
 
-        let env_theme = std::env::var("MOVIEBOX_THEME")
+        let env_theme = std::env::var("MOVIEZEN_THEME")
             .ok()
             .map(|value| value.trim().to_string())
             .filter(|value| !value.is_empty());

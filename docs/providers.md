@@ -1,6 +1,6 @@
 # Streaming Providers
 
-MovieBox-TUI searches and streams media across multiple independent providers.
+MovieZen-TUI searches and streams media across multiple independent providers.
 
 ## Available Providers
 
@@ -22,7 +22,7 @@ MovieBox-TUI searches and streams media across multiple independent providers.
 ## BDIX Network Detection
 
 If you are connected through a Bangladeshi ISP supporting BDIX:
-- MovieBox-TUI automatically tests local BDIX mirrors on startup and enables them if reachable.
+- MovieZen-TUI automatically tests local BDIX mirrors on startup and enables them if reachable.
 - You can manually re-test your connection anytime via `/settings` → **Maintenance** → **Re-check BDIX Network**.
 
 ## Provider Architecture (For Developers)
@@ -44,4 +44,4 @@ New providers implement `Provider` (and optionally `ReleaseProvider` for multi-m
 
 MovieBox CDN stream entries parse signed `CloudFront-Policy` and `Edge-Cache-Cookie` tokens to find stream roots. The manifest resolver accepts only `/dash/` resources. Unhosted legacy `/hls/` cookie targets are dropped to prevent 404 failures during playback or downloads.
 
-When upstream APIs return placeholder deprecation notices, MovieBox-TUI automatically queries the `/resource-position/v2` failover endpoint with scoped episode resolution to recover genuine signed MP4 streams, omitting the DASH Referer to prevent CDN HTTP 429 throttling.
+When upstream APIs return placeholder deprecation notices, MovieZen-TUI automatically queries the `/resource-position/v2` failover endpoint with scoped episode resolution to recover genuine signed MP4 streams, omitting the DASH Referer to prevent CDN HTTP 429 throttling.

@@ -52,7 +52,7 @@ impl App {
 
         self.state.available_players = crate::tui::player::detect();
         if crate::player::has_graphical_display()
-            && std::env::var(crate::player::ENV_MOVIEBOX_PLAYER).is_err()
+            && std::env::var(crate::player::ENV_MOVIEZEN_PLAYER).is_err()
             && self.state.default_player.as_deref().is_some_and(|p| {
                 p.eq_ignore_ascii_case("android")
                     || p.eq_ignore_ascii_case("androidintent")
@@ -67,7 +67,7 @@ impl App {
             self.state.default_player = None;
             self.persist_config();
         }
-        let preferred = std::env::var(crate::player::ENV_MOVIEBOX_PLAYER)
+        let preferred = std::env::var(crate::player::ENV_MOVIEZEN_PLAYER)
             .ok()
             .and_then(|value| crate::tui::state::PlayerKind::parse(&value))
             .or_else(|| {
@@ -261,7 +261,7 @@ impl App {
     }
 
     fn forced_protocol() -> Option<ForcedProtocol> {
-        match std::env::var("MOVIEBOX_IMAGE_PROTOCOL")
+        match std::env::var("MOVIEZEN_IMAGE_PROTOCOL")
             .unwrap_or_default()
             .to_ascii_lowercase()
             .as_str()
@@ -282,7 +282,7 @@ impl App {
     }
 
     fn cell_size_override() -> Option<ratatui_image::FontSize> {
-        let raw = std::env::var("MOVIEBOX_CELL_SIZE").ok()?;
+        let raw = std::env::var("MOVIEZEN_CELL_SIZE").ok()?;
         let raw = raw.trim().to_ascii_lowercase();
         let (width, height) = raw.split_once(['x', '*'])?;
         let width: u16 = width.trim().parse().ok()?;
@@ -314,21 +314,21 @@ impl App {
                 crate::tui::state::AppMode::Streaming => {
                     if self.state.active_provider == crate::providers::models::ProviderKind::Addons
                     {
-                        "MovieBox-Tui — Addons".to_string()
+                        "MovieZen-TUI — Addons".to_string()
                     } else {
-                        "MovieBox-Tui — Streaming".to_string()
+                        "MovieZen-TUI — Streaming".to_string()
                     }
                 }
-                crate::tui::state::AppMode::Tv => "MovieBox-Tui — Live TV".to_string(),
+                crate::tui::state::AppMode::Tv => "MovieZen-TUI — Live TV".to_string(),
             },
             Screen::Details => {
                 if let Some(details) = &self.state.selected_details {
                     let clean = crate::providers::moviebox::clean_moviebox_title(&details.title);
                     if !clean.is_empty() {
-                        return format!("MovieBox-Tui — {clean}");
+                        return format!("MovieZen-TUI — {clean}");
                     }
                 }
-                "MovieBox-Tui — Details".to_string()
+                "MovieZen-TUI — Details".to_string()
             }
         }
     }
@@ -1267,7 +1267,7 @@ impl App {
                         Span::raw("  "),
                         Span::styled("Homebrew Managed • Run: ", self.theme.text_dim),
                         Span::styled(
-                            "brew upgrade moviebox-tui",
+                            "brew upgrade moviezen-tui",
                             self.theme
                                 .shortcut
                                 .add_modifier(ratatui::style::Modifier::BOLD),
@@ -1280,7 +1280,7 @@ impl App {
                         Span::raw("  "),
                         Span::styled("Scoop Managed • Run: ", self.theme.text_dim),
                         Span::styled(
-                            "scoop update moviebox-tui",
+                            "scoop update moviezen",
                             self.theme
                                 .shortcut
                                 .add_modifier(ratatui::style::Modifier::BOLD),
@@ -1309,7 +1309,7 @@ impl App {
                     text.push(Line::from(vec![
                         Span::raw("  "),
                         Span::styled(
-                            "Snap sandbox • Run: sudo snap refresh moviebox-tui",
+                            "Snap sandbox • Run: sudo snap refresh moviezen",
                             self.theme.accent,
                         ),
                     ]));
@@ -1651,7 +1651,7 @@ mod tests {
         let mut app = App::new();
         app.state.is_updating = true;
         app.state.update_progress_msg =
-            Some("Downloading MovieBox_macOS_Universal.tar.gz...".to_string());
+            Some("Downloading MovieZen_macOS_Universal.tar.gz...".to_string());
         app.state.basic_terminal = false;
 
         terminal
@@ -1697,7 +1697,7 @@ mod tests {
         let mut min_terminal = Terminal::new(min_backend).unwrap();
         app.state.basic_terminal = false;
         app.state.update_progress_msg =
-            Some("Downloading MovieBox_macOS_Universal.tar.gz...".to_string());
+            Some("Downloading MovieZen_macOS_Universal.tar.gz...".to_string());
         min_terminal
             .draw(|f| {
                 app.draw(f);

@@ -1,19 +1,17 @@
 <div align="center">
 
-# MovieBox-TUI
+# MovieZen-TUI
 
 **स्थानीय मीडिया प्लेयर से फिल्में, टीवी शो और लाइव टीवी सर्च करने, डाउनलोड और स्ट्रीम करने का टर्मिनल इंटरफेस।**
 
 [ English ](README.md) • [ বাংলা ](README_BN.md) • [ हिन्दी ](README_HI.md) • [ Español ](README_ES.md)
 
-[![CI](https://img.shields.io/github/actions/workflow/status/mesamirh/MovieBox-Tui/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/mesamirh/MovieBox-Tui/actions/workflows/ci.yml)
-[![crates.io](https://img.shields.io/crates/v/moviebox-tui.svg?logo=rust&style=flat)](https://crates.io/crates/moviebox-tui)
+[![CI](https://img.shields.io/github/actions/workflow/status/sufiyan-sabeel/MovieZen-TUI/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/sufiyan-sabeel/MovieZen-TUI/actions/workflows/ci.yml)
+[![crates.io](https://img.shields.io/crates/v/moviezen-tui.svg?logo=rust&style=flat)](https://crates.io/crates/moviezen-tui)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg?style=flat)](#license)
-[![Telegram](https://img.shields.io/badge/Telegram-Channel-2CA5E0?style=flat&logo=telegram&logoColor=white)](https://t.me/getfromme)
-[![Support](https://img.shields.io/badge/Support-Crypto-F7931A?style=flat&logo=bitcoin&logoColor=white)](#optional-support)
 </div>
 
-[moviebox-tui-walkthrough.webm](https://github.com/user-attachments/assets/7554a7e5-6ff5-49ec-9d87-f821ea99950e)
+[moviezen-walkthrough.webm](https://github.com/user-attachments/assets/7554a7e5-6ff5-49ec-9d87-f821ea99950e)
 
 ## खास फीचर्स
 
@@ -39,28 +37,28 @@
 
 यदि आपके पास macOS पर [Homebrew](https://brew.sh/) है:
 ```bash
-brew tap mesamirh/moviebox-tui https://github.com/mesamirh/MovieBox-Tui
-brew install moviebox-tui
+brew tap sufiyan-sabeel/moviezen-tui https://github.com/sufiyan-sabeel/MovieZen-TUI
+brew install moviezen-tui
 ```
 
-> **नोट:** पहली बार इंस्टॉल करते समय यदि Homebrew वेरिफिकेशन मांगे, तो `brew trust mesamirh/moviebox-tui` चलाएं।
+> **नोट:** पहली बार इंस्टॉल करते समय यदि Homebrew वेरिफिकेशन मांगे, तो `brew trust sufiyan-sabeel/moviezen-tui` चलाएं।
 
 टर्मिनल से सीधे इंस्टॉल (macOS और Linux, किसी पैकेज मैनेजर की आवश्यकता नहीं):
 ```bash
-curl -fsSL https://raw.githubusercontent.com/mesamirh/MovieBox-Tui/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash
 ```
 
 ### Windows
 
 यदि आपके पास [Scoop](https://scoop.sh/) है (अनुशंसित):
 ```powershell
-scoop bucket add moviebox https://github.com/mesamirh/MovieBox-Tui
-scoop install moviebox-tui
+scoop bucket add moviezen https://github.com/sufiyan-sabeel/MovieZen-TUI
+scoop install moviezen-tui
 ```
 
 PowerShell स्क्रिप्ट से सीधे इंस्टॉल (किसी पैकेज मैनेजर की आवश्यकता नहीं):
 ```powershell
-irm https://raw.githubusercontent.com/mesamirh/MovieBox-Tui/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.ps1 | iex
 ```
 
 > **SmartScreen प्रॉम्ट:** यदि Windows *"Windows protected your PC"* दिखाता है, तो **More info** → **Run anyway** पर क्लिक करें।
@@ -70,7 +68,7 @@ irm https://raw.githubusercontent.com/mesamirh/MovieBox-Tui/main/install.ps1 | i
 Termux खोलें और चलाएं:
 ```bash
 pkg update && pkg install -y curl tar termux-tools termux-am
-curl -fsSL https://raw.githubusercontent.com/mesamirh/MovieBox-Tui/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sufiyan-sabeel/MovieZen-TUI/main/install.sh | bash
 termux-setup-storage
 ```
 > [!IMPORTANT]
@@ -81,13 +79,13 @@ termux-setup-storage
 
 crates.io से:
 ```bash
-cargo install moviebox-tui --locked
+cargo install moviezen-tui --locked
 ```
 
 सोर्स कोड से:
 ```bash
-git clone https://github.com/mesamirh/MovieBox-Tui.git
-cd MovieBox-Tui
+git clone https://github.com/sufiyan-sabeel/MovieZen-TUI.git
+cd MovieZen-TUI
 cargo build --release --locked
 ```
 
@@ -98,7 +96,7 @@ cargo build --release --locked
 
 ```bash
 sha256sum -c SHA256SUMS --ignore-missing
-gh attestation verify <archive-file> -R mesamirh/MovieBox-Tui
+gh attestation verify <archive-file> -R sufiyan-sabeel/MovieZen-TUI
 ```
 
 </details>
@@ -110,9 +108,9 @@ gh attestation verify <archive-file> -R mesamirh/MovieBox-Tui
 
 या पैकेज मैनेजर से:
 ```bash
-brew uninstall moviebox-tui     # Homebrew
-scoop uninstall moviebox-tui    # Scoop
-cargo uninstall moviebox-tui    # Cargo
+brew uninstall moviezen-tui     # Homebrew
+scoop uninstall moviezen    # Scoop
+cargo uninstall moviezen    # Cargo
 ```
 
 </details>
@@ -120,7 +118,7 @@ cargo uninstall moviebox-tui    # Cargo
 ## शुरुआत कैसे करें
 
 ```bash
-moviebox-tui
+moviezen
 ```
 
 - सर्च करने के लिए कोई भी टाइटल टाइप करें, प्ले करने के लिए `Enter` दबाएं।
@@ -128,7 +126,7 @@ moviebox-tui
 
 ## डॉक्यूमेंटेशन
 
-विस्तृत गाइड और आर्किटेक्चर संदर्भ [**mesamirh.github.io/MovieBox-Tui**](https://mesamirh.github.io/MovieBox-Tui/) पर या [`docs/`](docs/) डायरेक्टरी में उपलब्ध हैं:
+विस्तृत गाइड और आर्किटेक्चर संदर्भ [**sufiyan-sabeel.github.io/MovieZen-TUI**](https://sufiyan-sabeel.github.io/MovieZen-TUI/) पर या [`docs/`](docs/) डायरेक्टरी में उपलब्ध हैं:
 
 | गाइड | विवरण |
 | :--- | :--- |
@@ -144,26 +142,11 @@ moviebox-tui
 
 प्रोजेक्ट में योगदान का स्वागत है। पुल रिक्वेस्ट सबमिट करने से पहले [CONTRIBUTING.md](CONTRIBUTING.md) की समीक्षा करें।
 
-बग रिपोर्ट करने या नए फीचर का अनुरोध करने के लिए [GitHub Issues](https://github.com/mesamirh/MovieBox-Tui/issues) का उपयोग करें।
-
-<details>
-<summary><b>वैकल्पिक सहयोग (Optional Support)</b></summary>
-<div id="optional-support" tabindex="-1"></div>
-
-यदि आप सीधे निरंतर विकास का समर्थन करना चाहते हैं:
-
-| नेटवर्क / क्रिप्टोकरेंसी | पता (Address) |
-| :--- | :--- |
-| **USDT (TRC20)** | `TL4yW73qmbKZpBWwbEFgjBpwVkPDFTkJgV` |
-| **Bitcoin (BTC)** | `3MEAtqtRWrQBhnaMi3Zuf5nt2efNUS2LUQ` |
-| **Ethereum / EVM** | `0x7ea20d5fa29d87f33195f5a3b211ff94038d794c` |
-| **Solana (SOL)** | `6ctm5WFv73MNywoCKAz3xK72yizSspHa72rFNygooU6` |
-
-</details>
+बग रिपोर्ट करने या नए फीचर का अनुरोध करने के लिए [GitHub Issues](https://github.com/sufiyan-sabeel/MovieZen-TUI/issues) का उपयोग करें।
 
 ## गोपनीयता (Privacy)
 
-MovieBox-TUI में शून्य टेलीमेट्री, एनालिटिक्स या यूजर ट्रैकिंग है। सभी सर्च हिस्ट्री, बुकमार्क्स और कॉन्फ़िगरेशन फाइलें पूरी तरह से आपके स्थानीय फाइलसिस्टम पर ही रहती हैं।
+MovieZen-TUI में शून्य टेलीमेट्री, एनालिटिक्स या यूजर ट्रैकिंग है। सभी सर्च हिस्ट्री, बुकमार्क्स और कॉन्फ़िगरेशन फाइलें पूरी तरह से आपके स्थानीय फाइलसिस्टम पर ही रहती हैं।
 
 ## लाइसेंस
 

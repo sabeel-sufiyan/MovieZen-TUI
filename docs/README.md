@@ -1,19 +1,29 @@
 <div align="center">
 
+```
+███╗   ███╗ ██████╗ ██╗   ██╗██╗███████╗███████╗███████╗███╗   ██╗
+████╗ ████║██╔═══██╗██║   ██║██║██╔════╝╚══███╔╝██╔════╝████╗  ██║
+██╔████╔██║██║   ██║██║   ██║██║█████╗    ███╔╝ █████╗  ██╔██╗ ██║
+██║╚██╔╝██║██║   ██║╚██╗ ██╔╝██║██╔══╝   ███╔╝  ██╔══╝  ██║╚██╗██║
+██║ ╚═╝ ██║╚██████╔╝ ╚████╔╝ ██║███████╗███████╗███████╗██║ ╚████║
+╚═╝     ╚═╝ ╚═════╝   ╚═══╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝
+───────────────────── ────────────────────
+```
+
 # Introduction
 
-**Terminal interface to find, download, and stream movies, TV shows, and live TV using local media players.**
+**Your Terminal. Your Cinema. Your Zen.**
+
+A modern, keyboard-first terminal media interface with cross-platform support.
+
+Created by **Umaiz Sufiyan**
 
 [ English ](../README.md) • [ বাংলা ](../README_BN.md) • [ हिन्दी ](../README_HI.md) • [ Español ](../README_ES.md)
 
-[![CI](https://img.shields.io/github/actions/workflow/status/mesamirh/MovieBox-Tui/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/mesamirh/MovieBox-Tui/actions/workflows/ci.yml)
-[![crates.io](https://img.shields.io/crates/v/moviebox-tui.svg?logo=rust&style=flat)](https://crates.io/crates/moviebox-tui)
+[![CI](https://img.shields.io/github/actions/workflow/status/sufiyan-sabeel/MovieZen-TUI/ci.yml?branch=main&label=CI&logo=github&style=flat)](https://github.com/sufiyan-sabeel/MovieZen-TUI/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/moviezen-tui.svg?logo=npm&style=flat)](https://www.npmjs.com/package/moviezen-tui)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg?style=flat)](../README.md#license)
-[![Telegram](https://img.shields.io/badge/Telegram-Channel-2CA5E0?style=flat&logo=telegram&logoColor=white)](https://t.me/getfromme)
-[![Support](https://img.shields.io/badge/Support-Crypto-F7931A?style=flat&logo=bitcoin&logoColor=white)](../README.md#optional-support)
 </div>
-
-[moviebox-tui-walkthrough.webm](https://github.com/user-attachments/assets/7554a7e5-6ff5-49ec-9d87-f821ea99950e)
 
 ## Features
 

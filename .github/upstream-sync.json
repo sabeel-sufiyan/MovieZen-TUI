@@ -1,0 +1,7 @@
+{
+  "upstream_repository": "mesamirh/MovieBox-Tui",
+  "upstream_branch": "main",
+  "upstream_commit": "b901738b56170c278b35468c32ade32b9de1890d",
+  "synchronized_at": "2026-11-24T00:00:00Z",
+  "note": "Fork point of MovieZen-TUI. The upstream sync workflow advances this file as it merges upstream commits."
+}

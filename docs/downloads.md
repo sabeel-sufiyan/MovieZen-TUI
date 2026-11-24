@@ -1,10 +1,10 @@
 # Downloader
 
-MovieBox-TUI includes a multi-segment HTTP chunked downloader supporting pause, resume, and authentication header forwarding.
+MovieZen-TUI includes a multi-segment HTTP chunked downloader supporting pause, resume, and authentication header forwarding.
 
 ## Overview
 
-- **Storage Location**: Defaults to `~/Downloads/MovieBox-TUI/`. Configurable via `/settings` (General → Download Folder).
+- **Storage Location**: Defaults to `~/Downloads/MovieZen-TUI/`. Configurable via `/settings` (General → Download Folder).
 - **Multi-Segment Engine**: Files are partitioned into concurrent byte ranges using HTTP RFC 7233 `Range: bytes=X-Y` requests.
 - **Single-Stream Fallback**: If an upstream server or CDN does not support range requests (returns HTTP `200 OK` instead of `206 Partial Content`) or terminates concurrent connections with HTTP 403 or 429, the engine falls back to single-stream sequential downloading.
 ## File Lifecycle & State Files

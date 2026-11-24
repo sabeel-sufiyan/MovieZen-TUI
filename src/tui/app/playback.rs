@@ -25,7 +25,7 @@ impl App {
             return PlaybackResolution::NoPlayersInstalled;
         }
 
-        let preferred = std::env::var(crate::player::ENV_MOVIEBOX_PLAYER)
+        let preferred = std::env::var(crate::player::ENV_MOVIEZEN_PLAYER)
             .ok()
             .and_then(|value| crate::tui::state::PlayerKind::parse(&value))
             .or_else(|| {
@@ -494,7 +494,7 @@ impl App {
                 (link.clone(), local_subtitle.clone())
             };
 
-            let log_dir = std::env::temp_dir().join("moviebox-tui").join("subs");
+            let log_dir = std::env::temp_dir().join("moviezen").join("subs");
             let _ = std::fs::create_dir_all(&log_dir);
             let log_stamp = std::time::SystemTime::now()
                 .duration_since(std::time::UNIX_EPOCH)
@@ -1567,10 +1567,10 @@ mod tests {
     async fn test_graphical_session_overrides_stale_android_default_player() {
         let _guard = ENV_LOCK.lock().await;
         let orig_display = std::env::var("DISPLAY").ok();
-        let orig_player = std::env::var(crate::player::ENV_MOVIEBOX_PLAYER).ok();
+        let orig_player = std::env::var(crate::player::ENV_MOVIEZEN_PLAYER).ok();
         unsafe {
             std::env::set_var("DISPLAY", ":0.0");
-            std::env::remove_var(crate::player::ENV_MOVIEBOX_PLAYER);
+            std::env::remove_var(crate::player::ENV_MOVIEZEN_PLAYER);
         }
         let mut app = crate::tui::app::App::new();
         app.state.available_players = vec![
@@ -1598,9 +1598,9 @@ mod tests {
                 std::env::remove_var("DISPLAY");
             }
             if let Some(val) = orig_player {
-                std::env::set_var(crate::player::ENV_MOVIEBOX_PLAYER, val);
+                std::env::set_var(crate::player::ENV_MOVIEZEN_PLAYER, val);
             } else {
-                std::env::remove_var(crate::player::ENV_MOVIEBOX_PLAYER);
+                std::env::remove_var(crate::player::ENV_MOVIEZEN_PLAYER);
             }
         }
     }
@@ -1609,10 +1609,10 @@ mod tests {
     async fn test_graphical_session_respects_explicit_moviebox_player_env() {
         let _guard = ENV_LOCK.lock().await;
         let orig_display = std::env::var("DISPLAY").ok();
-        let orig_player = std::env::var(crate::player::ENV_MOVIEBOX_PLAYER).ok();
+        let orig_player = std::env::var(crate::player::ENV_MOVIEZEN_PLAYER).ok();
         unsafe {
             std::env::set_var("DISPLAY", ":0.0");
-            std::env::set_var(crate::player::ENV_MOVIEBOX_PLAYER, "android");
+            std::env::set_var(crate::player::ENV_MOVIEZEN_PLAYER, "android");
         }
         let mut app = crate::tui::app::App::new();
         app.state.available_players = vec![
@@ -1640,9 +1640,9 @@ mod tests {
                 std::env::remove_var("DISPLAY");
             }
             if let Some(val) = orig_player {
-                std::env::set_var(crate::player::ENV_MOVIEBOX_PLAYER, val);
+                std::env::set_var(crate::player::ENV_MOVIEZEN_PLAYER, val);
             } else {
-                std::env::remove_var(crate::player::ENV_MOVIEBOX_PLAYER);
+                std::env::remove_var(crate::player::ENV_MOVIEZEN_PLAYER);
             }
         }
     }
