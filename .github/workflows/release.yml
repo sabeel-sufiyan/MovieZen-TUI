@@ -425,3 +425,41 @@ jobs:
           VERSION="${{ needs.check-version.outputs.version }}"
           npm view "moviezen-tui@$VERSION" version dist.tarball
           npm view moviezen-tui bin
+
+  publish-github-packages:
+    name: Publish npm package to GitHub Packages
+    needs: [check-version, release]
+    if: needs.check-version.outputs.is_new == 'true' && inputs.publish_release
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          registry-url: "https://npm.pkg.github.com"
+
+      - name: Sync package version and licenses into the npm wrapper
+        run: |
+          VERSION="${{ needs.check-version.outputs.version }}"
+          node -e "
+            const fs = require('fs');
+            const p = 'npm/package.json';
+            const pkg = JSON.parse(fs.readFileSync(p, 'utf8'));
+            pkg.version = process.env.VERSION;
+            pkg.name = '@sabeel-sufiyan/moviezen-tui';
+            fs.writeFileSync(p, JSON.stringify(pkg, null, 2) + '\n');
+          "
+          cp LICENSE-MIT LICENSE-APACHE npm/
+        env:
+          VERSION: ${{ needs.check-version.outputs.version }}
+
+      - name: Publish to GitHub Packages
+        working-directory: npm
+        run: npm publish --access public --registry https://npm.pkg.github.com
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
